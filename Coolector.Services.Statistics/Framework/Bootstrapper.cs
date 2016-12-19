@@ -70,6 +70,7 @@ namespace Coolector.Services.Statistics.Framework
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>();
+                builder.RegisterInstance(AutoMapperConfig.InitializeMapper());
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 builder.RegisterType<Handler>().As<IHandler>();
