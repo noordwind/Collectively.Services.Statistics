@@ -7,7 +7,7 @@ using Coolector.Services.Statistics.Shared.Queries;
 
 namespace Coolector.Services.Statistics.Modules
 {
-    public class StatisticsModule : ApiModuleBase
+    public class StatisticsModule : ModuleBase
     {
         public StatisticsModule(IReporterRepository reporterRepository,
             IResolverRepository resolverRepository,
