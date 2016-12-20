@@ -32,8 +32,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             var values = await reporters
                 .AsQueryable()
                 .OrderByDescending(x => x.ReportedCount)
-                .Skip(query.Results * (query.Page - 1))
-                .Limit(query.Results)
+                .Limit(query.Page, query.Results)
                 .ToListAsync();
 
             return PagedResult<Reporter>.Create(values, query.Page, query.Results, totalPages, totalCount);
