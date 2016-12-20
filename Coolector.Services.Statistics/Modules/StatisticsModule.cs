@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Coolector.Common.Nancy;
 using Coolector.Services.Statistics.Domain;
-using Coolector.Services.Statistics.Dto;
-using Coolector.Services.Statistics.Queries;
 using Coolector.Services.Statistics.Repositories;
+using Coolector.Services.Statistics.Shared.Dto;
+using Coolector.Services.Statistics.Shared.Queries;
 
 namespace Coolector.Services.Statistics.Modules
 {

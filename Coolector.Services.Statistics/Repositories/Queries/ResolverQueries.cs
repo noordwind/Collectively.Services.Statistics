@@ -2,7 +2,7 @@
 using Coolector.Common.Mongo;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Domain;
-using Coolector.Services.Statistics.Queries;
+using Coolector.Services.Statistics.Shared.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Domain;
-using Coolector.Services.Statistics.Queries;
+using Coolector.Services.Statistics.Shared.Queries;
 
 namespace Coolector.Services.Statistics.Repositories
 {

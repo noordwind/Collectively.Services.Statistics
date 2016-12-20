@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Coolector.Services.Statistics.Domain;
-using Coolector.Services.Statistics.Dto;
+using Coolector.Services.Statistics.Shared.Dto;
 
 namespace Coolector.Services.Statistics.Framework
 {

@@ -1,4 +1,4 @@
-﻿namespace Coolector.Services.Statistics.Dto
+﻿namespace Coolector.Services.Statistics.Shared.Dto
 {
     public class ResolverDto
     {

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Domain;
-using Coolector.Services.Statistics.Queries;
 using Coolector.Services.Statistics.Repositories.Queries;
+using Coolector.Services.Statistics.Shared.Queries;
 using MongoDB.Driver;
 
 namespace Coolector.Services.Statistics.Repositories
