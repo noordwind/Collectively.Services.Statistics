@@ -1,8 +1,8 @@
 ﻿namespace Coolector.Services.Statistics.Shared.Dto
 {
-    public class ReporterDto
+    public class ReporterDto : IStatisticsDto
     {
-        public string Username { get; set; }
-        public int ReportedCount { get; set; }
+        public string Name { get; set; }
+        public int Count { get; set; }
     }
 }
