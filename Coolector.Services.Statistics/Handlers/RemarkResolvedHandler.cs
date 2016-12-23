@@ -10,9 +10,9 @@ namespace Coolector.Services.Statistics.Handlers
     public class RemarkResolvedHandler : IEventHandler<RemarkResolved>
     {
         private readonly IHandler _handler;
-        private readonly IResolverRepository _repository;
+        private readonly IUserStatisticsRepository _repository;
 
-        public RemarkResolvedHandler(IHandler handler, IResolverRepository repository)
+        public RemarkResolvedHandler(IHandler handler, IUserStatisticsRepository repository)
         {
             _handler = handler;
             _repository = repository;
@@ -23,13 +23,13 @@ namespace Coolector.Services.Statistics.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var resolver = await _repository.GetByNameAsync(@event.Username);
-                    if (resolver.HasNoValue)
-                        resolver = new Resolver(@event.UserId, @event.Username);
-                    else
-                        resolver.Value.IncreaseResolvedCount();
+                    var userStatistics = await _repository.GetByIdAsync(@event.UserId);
+                    if (userStatistics.HasNoValue)
+                        userStatistics = new UserStatistics(@event.UserId, @event.Username);
 
-                    await _repository.UpsertAsync(resolver.Value);
+                    userStatistics.Value.IncreaseResolvedCount();
+
+                    await _repository.UpsertAsync(userStatistics.Value);
                 })
                 .OnError((ex, logger) => logger.Error(ex, $"Error while handling {typeof(RemarkResolved).Name} event"))
                 .ExecuteAsync();

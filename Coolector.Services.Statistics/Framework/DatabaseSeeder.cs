@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Coolector.Common.Mongo;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories.Queries;
@@ -17,15 +18,17 @@ namespace Coolector.Services.Statistics.Framework
 
         public async Task SeedAsync()
         {
-            if (await _database.Reporters().AsQueryable().AnyAsync() == false)
+            if (await _database.UserStatistics().AsQueryable().AnyAsync() == false)
             {
-                var index = new IndexKeysDefinitionBuilder<Reporter>().Descending(x => x.ReportedCount);
-                await _database.Reporters().Indexes.CreateOneAsync(index);
-            }
-            if (await _database.Resolvers().AsQueryable().AnyAsync() == false)
-            {
-                var index = new IndexKeysDefinitionBuilder<Resolver>().Descending(x => x.ResolvedCount);
-                await _database.Resolvers().Indexes.CreateOneAsync(index);
+                var idIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Ascending(x => x.UserId);
+                await _database.UserStatistics().Indexes.CreateOneAsync(idIndex, new CreateIndexOptions
+                {
+                    Unique = true,
+                });
+                var reportedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.ReportedCount);
+                var resolvedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.ResolvedCount);
+                await _database.UserStatistics().Indexes.CreateOneAsync(reportedIndex);
+                await _database.UserStatistics().Indexes.CreateOneAsync(resolvedIndex);
             }
         }
     }

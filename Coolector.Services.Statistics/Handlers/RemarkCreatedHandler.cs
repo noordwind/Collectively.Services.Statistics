@@ -11,9 +11,9 @@ namespace Coolector.Services.Statistics.Handlers
     public class RemarkCreatedHandler : IEventHandler<RemarkCreated>
     {
         private readonly IHandler _handler;
-        private readonly IReporterRepository _repository;
+        private readonly IUserStatisticsRepository _repository;
 
-        public RemarkCreatedHandler(IHandler handler, IReporterRepository repository)
+        public RemarkCreatedHandler(IHandler handler, IUserStatisticsRepository repository)
         {
             _handler = handler;
             _repository = repository;
@@ -24,13 +24,13 @@ namespace Coolector.Services.Statistics.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var reporter = await _repository.GetByNameAsync(@event.Username);
-                    if (reporter.HasNoValue)
-                        reporter = new Reporter(@event.UserId, @event.Username);
-                    else
-                        reporter.Value.IncreaseReportedCount();
+                    var userStatistics = await _repository.GetByIdAsync(@event.UserId);
+                    if (userStatistics.HasNoValue) { }
+                        userStatistics = new UserStatistics(@event.UserId, @event.Username);
 
-                    await _repository.UpsertAsync(reporter.Value);
+                    userStatistics.Value.IncreaseReportedCount();
+
+                    await _repository.UpsertAsync(userStatistics.Value);
                 })
                 .OnError((ex, logger) => logger.Error(ex, $"Error while handling {typeof(RemarkCreated).Name} event"))
                 .ExecuteAsync();

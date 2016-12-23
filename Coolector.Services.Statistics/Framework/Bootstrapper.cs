@@ -74,8 +74,7 @@ namespace Coolector.Services.Statistics.Framework
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 builder.RegisterType<Handler>().As<IHandler>();
-                builder.RegisterType<ReporterRepository>().As<IReporterRepository>();
-                builder.RegisterType<ResolverRepository>().As<IResolverRepository>();
+                builder.RegisterType<UserStatisticsRepository>().As<IUserStatisticsRepository>();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
                 rmqRetryPolicy.Execute(() => builder

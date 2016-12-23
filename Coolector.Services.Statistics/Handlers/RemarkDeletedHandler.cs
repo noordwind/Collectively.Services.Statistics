@@ -9,9 +9,9 @@ namespace Coolector.Services.Statistics.Handlers
     public class RemarkDeletedHandler : IEventHandler<RemarkDeleted>
     {
         private readonly IHandler _handler;
-        private readonly IReporterRepository _repository;
+        private readonly IUserStatisticsRepository _repository;
 
-        public RemarkDeletedHandler(IHandler handler, IReporterRepository repository)
+        public RemarkDeletedHandler(IHandler handler, IUserStatisticsRepository repository)
         {
             _handler = handler;
             _repository = repository;
@@ -22,12 +22,12 @@ namespace Coolector.Services.Statistics.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var reporter = await _repository.GetByIdAsync(@event.UserId);
-                    if (reporter.HasNoValue)
+                    var userStatistics = await _repository.GetByIdAsync(@event.UserId);
+                    if (userStatistics.HasNoValue)
                         return;
 
-                    reporter.Value.DecreaseReportedCount();
-                    await _repository.UpsertAsync(reporter.Value);
+                    userStatistics.Value.DecreaseReportedCount();
+                    await _repository.UpsertAsync(userStatistics.Value);
                 })
                 .OnError((ex, logger) => logger.Error(ex, $"Error while handling {typeof(RemarkDeleted).Name} event"))
                 .ExecuteAsync();
