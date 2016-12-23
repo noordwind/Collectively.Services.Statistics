@@ -6,5 +6,6 @@ namespace Coolector.Services.Statistics.Shared.Queries
     {
         public int Page { get; set; }
         public int Results { get; set; }
+        public string OrderBy { get; set; }
     }
 }

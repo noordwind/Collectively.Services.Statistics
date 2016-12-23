@@ -29,9 +29,17 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         {
             var totalCount = await userStatistics.AsQueryable().CountAsync();
             var totalPages = (int)totalCount / query.Results + 1;
-            var values = await userStatistics
-                .AsQueryable()
-                .OrderByDescending(x => x.ReportedCount)
+            var queryable = userStatistics.AsQueryable();
+            switch (query.OrderBy)
+            {
+                case "reported":
+                    queryable.OrderByDescending(x => x.ReportedCount);
+                    break;
+                case "resolved":
+                    queryable.OrderByDescending(x => x.ResolvedCount);
+                    break;
+            }
+            var values = await queryable
                 .Limit(query.Page, query.Results)
                 .ToListAsync();
 
