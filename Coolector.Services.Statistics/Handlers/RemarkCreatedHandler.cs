@@ -25,7 +25,7 @@ namespace Coolector.Services.Statistics.Handlers
                 .Run(async () =>
                 {
                     var userStatistics = await _repository.GetByIdAsync(@event.UserId);
-                    if (userStatistics.HasNoValue) { }
+                    if (userStatistics.HasNoValue)
                         userStatistics = new UserStatistics(@event.UserId, @event.Username);
 
                     userStatistics.Value.IncreaseReportedCount();
