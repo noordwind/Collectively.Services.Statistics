@@ -8,9 +8,20 @@ namespace Coolector.Services.Statistics.Modules
 {
     public class StatisticsModule : ModuleBase
     {
-        public StatisticsModule(IUserStatisticsRepository userStatisticsRepository,
+        public StatisticsModule(IRemarkStatisticsRepository remarkStatisticsRepository,
+            IUserStatisticsRepository userStatisticsRepository,
             IMapper mapper) : base(mapper, "statistics")
         {
+            Get("remarks", async args => await FetchCollection<BrowseRemarkStatistics, RemarkStatistics>
+                (async x => await remarkStatisticsRepository.BrowseAsync(x))
+                .MapTo<UserStatisticsDto>()
+                .HandleAsync());
+
+            Get("remarks/{id}", async args => await Fetch<GetRemarkStatistics, RemarkStatistics>
+                (async x => await remarkStatisticsRepository.GetAsync(x.Id))
+                .MapTo<UserStatisticsDto>()
+                .HandleAsync());
+
             Get("users", async args => await FetchCollection<BrowseUserStatistics, UserStatistics>
                 (async x => await userStatisticsRepository.BrowseAsync(x))
                 .MapTo<UserStatisticsDto>()

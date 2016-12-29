@@ -11,6 +11,9 @@ namespace Coolector.Services.Statistics.Framework
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserStatistics, UserStatisticsDto>();
+                cfg.CreateMap<RemarkStatistics, RemarkStatisticsDto>();
+                cfg.CreateMap<RemarkStatistics.RemarkUser, RemarkStatisticsDto.UserDto>();
+                cfg.CreateMap<RemarkStatistics.RemarkLocation, RemarkStatisticsDto.LocationDto>();
             });
 
             return config.CreateMapper();

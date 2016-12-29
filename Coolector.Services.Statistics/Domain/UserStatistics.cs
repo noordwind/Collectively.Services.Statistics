@@ -25,6 +25,7 @@ namespace Coolector.Services.Statistics.Domain
             Name = name;
             ReportedCount = 0;
             ResolvedCount = 0;
+            DeletedCount = 0;
         }
 
         public void IncreaseReportedCount() => ReportedCount++;
@@ -48,13 +49,5 @@ namespace Coolector.Services.Statistics.Domain
         }
 
         public void IncreaseDeletedCount() => DeletedCount++;
-
-        public void DecreaseDeletedCount()
-        {
-            if (ResolvedCount == 0)
-                return;
-
-            DeletedCount--;
-        }
     }
 }
