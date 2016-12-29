@@ -2,7 +2,7 @@
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories.Queries;
-using Coolector.Services.Statistics.Shared.Queries;
+using Coolector.Services.Statistics.Queries;
 using MongoDB.Driver;
 
 namespace Coolector.Services.Statistics.Repositories
@@ -25,7 +25,7 @@ namespace Coolector.Services.Statistics.Repositories
         public async Task<Maybe<UserStatistics>> GetByNameAsync(string name)
             => await _database.UserStatistics().GetByNameAsync(name);
 
-        public async Task UpsertAsync(UserStatistics reporter)
-            => await _database.UserStatistics().UpsertAsync(reporter);
+        public async Task UpsertAsync(UserStatistics statistics)
+            => await _database.UserStatistics().UpsertAsync(statistics);
     }
 }

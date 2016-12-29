@@ -28,8 +28,6 @@ namespace Coolector.Services.Statistics.Framework
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static IExceptionHandler _exceptionHandler;
-        private static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-        private static readonly string InvalidDecimalSeparator = DecimalSeparator == "." ? "," : ".";
         private readonly IConfiguration _configuration;
         public static ILifetimeScope LifetimeScope { get; private set; }
 
@@ -75,6 +73,7 @@ namespace Coolector.Services.Statistics.Framework
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterType<UserStatisticsRepository>().As<IUserStatisticsRepository>();
+                builder.RegisterType<RemarkStatisticsRepository>().As<IRemarkStatisticsRepository>();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
                 rmqRetryPolicy.Execute(() => builder
@@ -105,13 +104,6 @@ namespace Coolector.Services.Statistics.Framework
             var databaseSeeder = container.Resolve<IDatabaseSeeder>();
             databaseSeeder.SeedAsync();
 
-            pipelines.BeforeRequest += (ctx) =>
-            {
-                FixNumberFormat(ctx);
-
-                return null;
-            };
-
             pipelines.AfterRequest += (ctx) =>
             {
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -121,28 +113,6 @@ namespace Coolector.Services.Statistics.Framework
             };
             _exceptionHandler = container.Resolve<IExceptionHandler>();
             Logger.Info("Coolector.Services.Statistics API has started.");
-        }
-
-        private void FixNumberFormat(NancyContext ctx)
-        {
-            if (ctx.Request.Query == null)
-                return;
-
-            var fixedNumbers = new Dictionary<string, double>();
-            foreach (var key in ctx.Request.Query)
-            {
-                var value = ctx.Request.Query[key].ToString();
-                if (!value.Contains(InvalidDecimalSeparator))
-                    continue;
-
-                var number = 0;
-                if (int.TryParse(value.Split(InvalidDecimalSeparator[0])[0], out number))
-                    fixedNumbers[key] = double.Parse(value.Replace(InvalidDecimalSeparator, DecimalSeparator));
-            }
-            foreach (var fixedNumber in fixedNumbers)
-            {
-                ctx.Request.Query[fixedNumber.Key] = fixedNumber.Value;
-            }
         }
     }
 }

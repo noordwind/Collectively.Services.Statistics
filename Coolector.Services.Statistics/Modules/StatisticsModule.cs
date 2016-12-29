@@ -2,7 +2,7 @@
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories;
 using Coolector.Services.Statistics.Shared.Dto;
-using Coolector.Services.Statistics.Shared.Queries;
+using Coolector.Services.Statistics.Queries;
 
 namespace Coolector.Services.Statistics.Modules
 {

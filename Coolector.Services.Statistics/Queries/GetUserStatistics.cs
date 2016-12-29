@@ -1,6 +1,6 @@
 ﻿using Coolector.Common.Queries;
 
-namespace Coolector.Services.Statistics.Shared.Queries
+namespace Coolector.Services.Statistics.Queries
 {
     public class GetUserStatistics : IQuery
     {
