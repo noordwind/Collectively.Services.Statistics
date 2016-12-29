@@ -25,25 +25,20 @@ namespace Coolector.Services.Statistics.Repositories.Queries
                 IsUpsert = true
             });
 
-        public static async Task<PagedResult<UserStatistics>> QueryAsync(this IMongoCollection<UserStatistics> userStatistics, BrowseUserStatistics query)
+        public static IMongoQueryable<UserStatistics> Query(this IMongoCollection<UserStatistics> userStatistics, BrowseUserStatistics query)
         {
-            var totalCount = await userStatistics.AsQueryable().CountAsync();
-            var totalPages = (int)totalCount / query.Results + 1;
-            var queryable = userStatistics.AsQueryable();
-            switch (query.OrderBy)
+            var values = userStatistics.AsQueryable();
+            switch (query.OrderBy.ToLowerInvariant())
             {
                 case "reported":
-                    queryable.OrderByDescending(x => x.ReportedCount);
+                    values = values.OrderByDescending(x => x.ReportedCount);
                     break;
                 case "resolved":
-                    queryable.OrderByDescending(x => x.ResolvedCount);
+                    values = values.OrderByDescending(x => x.ResolvedCount);
                     break;
             }
-            var values = await queryable
-                .Limit(query.Page, query.Results)
-                .ToListAsync();
 
-            return PagedResult<UserStatistics>.Create(values, query.Page, query.Results, totalPages, totalCount);
+            return values;
         }
     }
 }

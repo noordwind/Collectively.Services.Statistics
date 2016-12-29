@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
+using Coolector.Common.Mongo;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories.Queries;
 using Coolector.Services.Statistics.Queries;
@@ -17,7 +18,9 @@ namespace Coolector.Services.Statistics.Repositories
         }
 
         public async Task<Maybe<PagedResult<UserStatistics>>> BrowseAsync(BrowseUserStatistics query)
-            => await _database.UserStatistics().QueryAsync(query);
+            => await _database.UserStatistics()
+                    .Query(query)
+                    .PaginateAsync();
 
         public async Task<Maybe<UserStatistics>> GetByIdAsync(string userId)
             => await _database.UserStatistics().GetByIdAsync(userId);
