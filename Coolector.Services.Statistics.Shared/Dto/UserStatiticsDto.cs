@@ -4,8 +4,8 @@
     {
         public string UserId { get; set; }
         public string Name { get; set; }
-        public string ReportedCount { get; set; }
-        public string ResolvedCount { get; set; }
-        public string DeletedCount { get; set; }
+        public int ReportedCount { get; set; }
+        public int ResolvedCount { get; set; }
+        public int DeletedCount { get; set; }
     }
 }
