@@ -28,7 +28,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         public static IMongoQueryable<UserStatistics> Query(this IMongoCollection<UserStatistics> userStatistics, BrowseUserStatistics query)
         {
             var values = userStatistics.AsQueryable();
-            switch (query.OrderBy.ToLowerInvariant())
+            switch (query.OrderBy?.ToLowerInvariant())
             {
                 case "reported":
                     values = values.OrderByDescending(x => x.ReportedCount);

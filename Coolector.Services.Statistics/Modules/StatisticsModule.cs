@@ -14,12 +14,12 @@ namespace Coolector.Services.Statistics.Modules
         {
             Get("remarks", async args => await FetchCollection<BrowseRemarkStatistics, RemarkStatistics>
                 (async x => await remarkStatisticsRepository.BrowseAsync(x))
-                .MapTo<UserStatisticsDto>()
+                .MapTo<RemarkStatistics>()
                 .HandleAsync());
 
             Get("remarks/{id}", async args => await Fetch<GetRemarkStatistics, RemarkStatistics>
                 (async x => await remarkStatisticsRepository.GetAsync(x.Id))
-                .MapTo<UserStatisticsDto>()
+                .MapTo<RemarkStatistics>()
                 .HandleAsync());
 
             Get("users", async args => await FetchCollection<BrowseUserStatistics, UserStatistics>
