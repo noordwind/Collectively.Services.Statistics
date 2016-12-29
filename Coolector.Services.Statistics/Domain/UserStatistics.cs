@@ -10,6 +10,7 @@ namespace Coolector.Services.Statistics.Domain
         public string Name { get; protected set; }
         public uint ReportedCount { get; protected set; }
         public uint ResolvedCount { get; protected set; }
+        public uint DeletedCount { get; protected set; }
 
         protected UserStatistics() { }
 
@@ -32,6 +33,7 @@ namespace Coolector.Services.Statistics.Domain
         {
             if (ReportedCount == 0)
                 return;
+
             ReportedCount--;
         }
 
@@ -41,7 +43,18 @@ namespace Coolector.Services.Statistics.Domain
         {
             if (ResolvedCount == 0)
                 return;
+
             ResolvedCount--;
+        }
+
+        public void IncreaseDeletedCount() => DeletedCount++;
+
+        public void DecreaseDeletedCount()
+        {
+            if (ResolvedCount == 0)
+                return;
+
+            DeletedCount--;
         }
     }
 }

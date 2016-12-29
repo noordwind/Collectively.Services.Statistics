@@ -10,12 +10,16 @@ namespace Coolector.Services.Statistics.Handlers
     public class RemarkResolvedHandler : IEventHandler<RemarkResolved>
     {
         private readonly IHandler _handler;
-        private readonly IUserStatisticsRepository _repository;
+        private readonly IRemarkStatisticsRepository _remarkStatisticsRepository;
+        private readonly IUserStatisticsRepository _userStatisticsRepository;
 
-        public RemarkResolvedHandler(IHandler handler, IUserStatisticsRepository repository)
+        public RemarkResolvedHandler(IHandler handler, 
+            IRemarkStatisticsRepository remarkStatisticsRepository,
+            IUserStatisticsRepository userStatisticsRepository)
         {
             _handler = handler;
-            _repository = repository;
+            _remarkStatisticsRepository = remarkStatisticsRepository;
+            _userStatisticsRepository = userStatisticsRepository;
         }
 
         public async Task HandleAsync(RemarkResolved @event)
@@ -23,16 +27,33 @@ namespace Coolector.Services.Statistics.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var userStatistics = await _repository.GetByIdAsync(@event.UserId);
-                    if (userStatistics.HasNoValue)
-                        userStatistics = new UserStatistics(@event.UserId, @event.Username);
-
-                    userStatistics.Value.IncreaseResolvedCount();
-
-                    await _repository.UpsertAsync(userStatistics.Value);
+                    await HandleRemarkStatisticsAsync(@event);
+                    await HandleUserStatisticsAsync(@event);
                 })
                 .OnError((ex, logger) => logger.Error(ex, $"Error while handling {typeof(RemarkResolved).Name} event"))
                 .ExecuteAsync();
+        }
+
+        private async Task HandleRemarkStatisticsAsync(RemarkResolved @event)
+        {
+            var remarkStatistics = await _remarkStatisticsRepository.GetAsync(@event.RemarkId);
+            if (remarkStatistics.HasNoValue)
+                return;
+
+            remarkStatistics.Value.SetResolved(@event.UserId, @event.Username, @event.ResolvedAt);
+            await _remarkStatisticsRepository.UpsertAsync(remarkStatistics.Value);
+        }
+
+        private async Task HandleUserStatisticsAsync(RemarkResolved @event)
+        {
+            var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
+            if (userStatistics.HasNoValue)
+            {
+                userStatistics = new UserStatistics(@event.UserId, @event.Username);
+            }
+
+            userStatistics.Value.IncreaseResolvedCount();
+            await _userStatisticsRepository.UpsertAsync(userStatistics.Value);
         }
     }
 }
