@@ -28,6 +28,23 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             var values = statistics.AsQueryable();
 
             return values;
-        }        
+        }
+
+        public static async Task<RemarkGeneralStatistics> CalculateGeneralStatisticsAsync(
+            this IMongoCollection<RemarkStatistics> statistics,
+            GetRemarkGeneralStatistics query)
+        {
+            var from = query.From.GetValueOrDefault(default(DateTime));
+            var to = query.To.GetValueOrDefault(DateTime.MaxValue);
+            var reportedCount = await statistics.AsQueryable()
+                .CountAsync(x => x.CreatedAt > from 
+                && x.CreatedAt < to);
+            var resolvedCount = await statistics.AsQueryable()
+                .CountAsync(x => x.ResolvedAt != null
+                && x.ResolvedAt > from
+                && x.ResolvedAt < to);
+
+            return new RemarkGeneralStatistics(reportedCount, resolvedCount);
+        }
     }
 }

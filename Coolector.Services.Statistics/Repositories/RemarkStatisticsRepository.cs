@@ -24,10 +24,14 @@ namespace Coolector.Services.Statistics.Repositories
                     .Query(query)
                     .PaginateAsync();
 
+        public async Task<Maybe<RemarkGeneralStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
+            => await _database.RemarkStatistics()
+                .CalculateGeneralStatisticsAsync(query);
+
         public async Task<Maybe<RemarkStatistics>> GetAsync(Guid remarkId)
             => await _database.RemarkStatistics().GetAsync(remarkId);
 
         public async Task UpsertAsync(RemarkStatistics statistics)
-            => await _database.RemarkStatistics().UpsertAsync(statistics);        
+            => await _database.RemarkStatistics().UpsertAsync(statistics);
     }
 }
