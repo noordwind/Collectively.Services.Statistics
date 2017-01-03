@@ -11,6 +11,7 @@ using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
 using Coolector.Common.Nancy.Serialization;
 using Coolector.Common.RabbitMq;
+using Coolector.Common.Security;
 using Coolector.Common.Services;
 using Coolector.Services.Statistics.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -63,10 +64,12 @@ namespace Coolector.Services.Statistics.Framework
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterType<UserStatisticsRepository>().As<IUserStatisticsRepository>();
                 builder.RegisterType<RemarkStatisticsRepository>().As<IRemarkStatisticsRepository>();
-                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
 
                 var assembly = typeof(Startup).GetTypeInfo().Assembly;
                 builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEventHandler<>));
+
+                SecurityContainer.Register(builder, _configuration);
+                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });
             LifetimeScope = container;
         }
@@ -96,6 +99,7 @@ namespace Coolector.Services.Statistics.Framework
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers",
                     "Authorization, Origin, X-Requested-With, Content-Type, Accept");
             };
+            pipelines.SetupTokenAuthentication(container);
             _exceptionHandler = container.Resolve<IExceptionHandler>();
             Logger.Info("Coolector.Services.Statistics API has started.");
         }
