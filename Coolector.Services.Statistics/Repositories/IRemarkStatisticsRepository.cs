@@ -11,6 +11,6 @@ namespace Coolector.Services.Statistics.Repositories
         Task<Maybe<PagedResult<RemarkStatistics>>> BrowseAsync(BrowseRemarkStatistics query);
         Task<Maybe<RemarkStatistics>> GetAsync(Guid remarkId);
         Task<Maybe<RemarkGeneralStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query);
-        Task UpsertAsync(RemarkStatistics statistics);
+        Task AddOrUpdateAsync(RemarkStatistics statistics);
     }
 }

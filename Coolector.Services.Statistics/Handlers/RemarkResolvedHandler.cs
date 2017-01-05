@@ -41,7 +41,7 @@ namespace Coolector.Services.Statistics.Handlers
                 return;
 
             remarkStatistics.Value.SetResolved(@event.UserId, @event.Username, @event.ResolvedAt);
-            await _remarkStatisticsRepository.UpsertAsync(remarkStatistics.Value);
+            await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
         private async Task HandleUserStatisticsAsync(RemarkResolved @event)
@@ -53,7 +53,7 @@ namespace Coolector.Services.Statistics.Handlers
             }
 
             userStatistics.Value.IncreaseResolvedCount();
-            await _userStatisticsRepository.UpsertAsync(userStatistics.Value);
+            await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
     }
 }

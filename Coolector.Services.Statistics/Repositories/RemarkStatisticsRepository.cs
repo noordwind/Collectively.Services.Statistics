@@ -31,7 +31,7 @@ namespace Coolector.Services.Statistics.Repositories
         public async Task<Maybe<RemarkStatistics>> GetAsync(Guid remarkId)
             => await _database.RemarkStatistics().GetAsync(remarkId);
 
-        public async Task UpsertAsync(RemarkStatistics statistics)
-            => await _database.RemarkStatistics().UpsertAsync(statistics);
+        public async Task AddOrUpdateAsync(RemarkStatistics statistics)
+            => await _database.RemarkStatistics().AddOrUpdateAsync(statistics);
     }
 }

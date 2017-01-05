@@ -64,6 +64,8 @@ namespace Coolector.Services.Statistics.Framework
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterType<UserStatisticsRepository>().As<IUserStatisticsRepository>();
                 builder.RegisterType<RemarkStatisticsRepository>().As<IRemarkStatisticsRepository>();
+                builder.RegisterType<CategoryStatisticsRepository>().As<ICategoryStatisticsRepository>();
+                builder.RegisterType<TagStatisticsRepository>().As<ITagStatisticsRepository>();
 
                 var assembly = typeof(Startup).GetTypeInfo().Assembly;
                 builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEventHandler<>));

@@ -10,6 +10,6 @@ namespace Coolector.Services.Statistics.Repositories
         Task<Maybe<PagedResult<UserStatistics>>> BrowseAsync(BrowseUserStatistics query);
         Task<Maybe<UserStatistics>> GetByIdAsync(string userId);
         Task<Maybe<UserStatistics>> GetByNameAsync(string name);
-        Task UpsertAsync(UserStatistics statistics);
+        Task AddOrUpdateAsync(UserStatistics statistics);
     }
 }

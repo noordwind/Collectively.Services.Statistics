@@ -41,7 +41,7 @@ namespace Coolector.Services.Statistics.Handlers
                 return;
 
             remarkStatistics.Value.SetDeleted();
-            await _remarkStatisticsRepository.UpsertAsync(remarkStatistics.Value);
+            await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
         private async Task HandleUserStatisticsAsync(RemarkDeleted @event)
@@ -51,7 +51,7 @@ namespace Coolector.Services.Statistics.Handlers
                 return;
 
             userStatistics.Value.IncreaseDeletedCount();
-            await _userStatisticsRepository.UpsertAsync(userStatistics.Value);
+            await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
     }
 }

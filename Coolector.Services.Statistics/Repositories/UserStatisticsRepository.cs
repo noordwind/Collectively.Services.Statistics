@@ -28,7 +28,7 @@ namespace Coolector.Services.Statistics.Repositories
         public async Task<Maybe<UserStatistics>> GetByNameAsync(string name)
             => await _database.UserStatistics().GetByNameAsync(name);
 
-        public async Task UpsertAsync(UserStatistics statistics)
-            => await _database.UserStatistics().UpsertAsync(statistics);
+        public async Task AddOrUpdateAsync(UserStatistics statistics)
+            => await _database.UserStatistics().AddOrUpdateAsync(statistics);
     }
 }

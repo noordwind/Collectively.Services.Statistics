@@ -19,7 +19,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         public static async Task<UserStatistics> GetByNameAsync(this IMongoCollection<UserStatistics> userStatistics, string name)
             => await userStatistics.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
 
-        public static async Task UpsertAsync(this IMongoCollection<UserStatistics> userStatistics, UserStatistics user)
+        public static async Task AddOrUpdateAsync(this IMongoCollection<UserStatistics> userStatistics, UserStatistics user)
             => await userStatistics.ReplaceOneAsync(x => x.Id == user.Id, user, new UpdateOptions
             {
                 IsUpsert = true
