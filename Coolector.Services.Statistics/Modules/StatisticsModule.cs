@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories;
 using Coolector.Services.Statistics.Shared.Dto;
@@ -10,6 +11,8 @@ namespace Coolector.Services.Statistics.Modules
     {
         public StatisticsModule(IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
+            ICategoryStatisticsRepository categoryStatisticsRepository,
+            ITagStatisticsRepository tagStatisticsRepository,
             IMapper mapper) : base(mapper, "statistics")
         {
             Get("remarks", async args => await FetchCollection<BrowseRemarkStatistics, RemarkStatistics>
@@ -25,6 +28,16 @@ namespace Coolector.Services.Statistics.Modules
             Get("remarks/general", async args => await Fetch<GetRemarkGeneralStatistics, RemarkGeneralStatistics>
                 (async x => await remarkStatisticsRepository.GetGeneralStatisticsAsync(x))
                 .MapTo<RemarkGeneralStatisticsDto>()
+                .HandleAsync());
+
+            Get("categories", async args => await FetchCollection<BrowseCategoryStatistics, CategoryStatistics>
+                (async x => await categoryStatisticsRepository.BrowseAsync(x))
+                .MapTo<CategoryStatisticsDto>()
+                .HandleAsync());
+
+            Get("tags", async args => await FetchCollection<BrowseTagStatistics, TagStatistics>
+                (async x => await tagStatisticsRepository.BrowseAsync(x))
+                .MapTo<TagStatisticsDto>()
                 .HandleAsync());
 
             Get("users", async args => await FetchCollection<BrowseUserStatistics, UserStatistics>
