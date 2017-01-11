@@ -15,6 +15,8 @@ namespace Coolector.Services.Statistics
                 .SubscribeToEvent<RemarkCreated>()
                 .SubscribeToEvent<RemarkResolved>()
                 .SubscribeToEvent<RemarkDeleted>()
+                .SubscribeToEvent<RemarkVoteSubmitted>()
+                .SubscribeToEvent<RemarkVoteDeleted>()
                 .Build()
                 .Run();
         }

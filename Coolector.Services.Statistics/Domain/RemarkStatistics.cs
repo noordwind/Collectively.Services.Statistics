@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Coolector.Common.Domain;
-using Coolector.Common.Extensions;
 
 namespace Coolector.Services.Statistics.Domain
 {
@@ -18,6 +17,7 @@ namespace Coolector.Services.Statistics.Domain
         public DateTime CreatedAt { get; protected set; }
         public DateTime? ResolvedAt { get; protected set; }
         public DateTime? DeletedAt { get; protected set; }
+        public IList<VoteStatistics> Votes { get; protected set; }
 
         public IEnumerable<string> Tags
         {
@@ -41,6 +41,7 @@ namespace Coolector.Services.Statistics.Domain
             Location = new RemarkLocation(latitude, longitude, address);
             Description = description;
             Tags = tags ?? new HashSet<string>();
+            Votes = new List<VoteStatistics>();
             State = RemarkState.Created;
         }
 
@@ -56,6 +57,14 @@ namespace Coolector.Services.Statistics.Domain
         {
             DeletedAt = DateTime.UtcNow;
             State = RemarkState.Deleted;
+        }
+
+        public void AddVote(VoteStatistics vote)
+        {
+            if (Votes == null)
+                Votes = new List<VoteStatistics>();
+
+            Votes.Add(vote);
         }
 
         public class RemarkUser 

@@ -11,5 +11,7 @@ namespace Coolector.Services.Statistics.Repositories
         Task<Maybe<UserStatistics>> GetByIdAsync(string userId);
         Task<Maybe<UserStatistics>> GetByNameAsync(string name);
         Task AddOrUpdateAsync(UserStatistics statistics);
+        Task<Maybe<PagedResult<VoteStatistics>>> BrowseVotesAsync(BrowseUserVotes query);
+        Task AddVoteAsync(VoteStatistics vote);
     }
 }

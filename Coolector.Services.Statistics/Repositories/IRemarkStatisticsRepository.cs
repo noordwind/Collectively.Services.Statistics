@@ -12,5 +12,7 @@ namespace Coolector.Services.Statistics.Repositories
         Task<Maybe<RemarkStatistics>> GetAsync(Guid remarkId);
         Task<Maybe<RemarkGeneralStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query);
         Task AddOrUpdateAsync(RemarkStatistics statistics);
+        Task<Maybe<PagedResult<VoteStatistics>>> BrowseVotesAsync(BrowseRemarkVotes query);
+        Task AddVoteAsync(VoteStatistics vote);
     }
 }

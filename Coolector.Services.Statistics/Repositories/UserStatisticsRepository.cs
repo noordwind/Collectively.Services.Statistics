@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Coolector.Common.Extensions;
 using Coolector.Common.Types;
 using Coolector.Common.Mongo;
 using Coolector.Services.Statistics.Domain;
@@ -30,5 +31,25 @@ namespace Coolector.Services.Statistics.Repositories
 
         public async Task AddOrUpdateAsync(UserStatistics statistics)
             => await _database.UserStatistics().AddOrUpdateAsync(statistics);
+
+        public async Task<Maybe<PagedResult<VoteStatistics>>> BrowseVotesAsync(BrowseUserVotes query)
+        {
+            var userStats = await GetByIdAsync(query.UserId);
+            if (userStats.HasNoValue || userStats.Value.Votes == null)
+            {
+                return PagedResult<VoteStatistics>.Empty;
+            }
+
+            return userStats.Value.Votes.Paginate(query);
+        }
+
+        public async Task AddVoteAsync(VoteStatistics vote)
+        {
+            var userStats = await _database.UserStatistics()
+                .GetByIdAsync(vote.UserId);
+
+            userStats.AddVote(vote);
+            await AddOrUpdateAsync(userStats);
+        }
     }
 }

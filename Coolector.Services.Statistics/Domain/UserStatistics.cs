@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Coolector.Common.Domain;
 using Coolector.Common.Extensions;
 
@@ -11,6 +12,7 @@ namespace Coolector.Services.Statistics.Domain
         public uint ReportedCount { get; protected set; }
         public uint ResolvedCount { get; protected set; }
         public uint DeletedCount { get; protected set; }
+        public IList<VoteStatistics> Votes { get; protected set; }
 
         protected UserStatistics() { }
 
@@ -26,6 +28,7 @@ namespace Coolector.Services.Statistics.Domain
             ReportedCount = 0;
             ResolvedCount = 0;
             DeletedCount = 0;
+            Votes = new List<VoteStatistics>();
         }
 
         public void IncreaseReportedCount() => ReportedCount++;
@@ -49,5 +52,13 @@ namespace Coolector.Services.Statistics.Domain
         }
 
         public void IncreaseDeletedCount() => DeletedCount++;
+
+        public void AddVote(VoteStatistics vote)
+        {
+            if (Votes == null)
+                Votes = new List<VoteStatistics>();
+
+            Votes.Add(vote);
+        }
     }
 }
