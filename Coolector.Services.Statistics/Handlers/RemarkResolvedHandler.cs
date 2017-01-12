@@ -40,7 +40,14 @@ namespace Coolector.Services.Statistics.Handlers
             if (remarkStatistics.HasNoValue)
                 return;
 
-            remarkStatistics.Value.SetResolved(@event.UserId, @event.Username, @event.ResolvedAt);
+            RemarkStatistics.RemarkLocation location = null;
+            if (@event.ResolvedAtLocation != null)
+            {
+                location = new RemarkStatistics.RemarkLocation(@event.ResolvedAtLocation.Latitude,
+                    @event.ResolvedAtLocation.Longitude, @event.ResolvedAtLocation.Address);
+            }
+
+            remarkStatistics.Value.SetResolved(@event.UserId, @event.Username, @event.ResolvedAt, location);
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 

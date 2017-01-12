@@ -11,6 +11,7 @@ namespace Coolector.Services.Statistics.Domain
         public string Category { get; protected set; }
         public RemarkUser Author { get; protected set; }
         public RemarkLocation Location { get; protected set; }
+        public RemarkLocation ResolvedAtLocation { get; protected set; }
         public string Description { get; protected set; }
         public RemarkUser Resolver { get; protected set; }
         public string State { get; protected set; }
@@ -46,8 +47,12 @@ namespace Coolector.Services.Statistics.Domain
         }
 
         public void SetResolved(string resolverId, string resolverName,
-            DateTime resolvedAt)
+            DateTime resolvedAt, RemarkLocation location = null)
         {
+            if (location != null)
+            {
+                ResolvedAtLocation = location;
+            }
             Resolver = new RemarkUser(resolverId, resolverName);
             ResolvedAt = resolvedAt;
             State = RemarkState.Resolved;
