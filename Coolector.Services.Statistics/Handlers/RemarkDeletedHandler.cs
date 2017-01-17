@@ -58,7 +58,7 @@ namespace Coolector.Services.Statistics.Handlers
             if (userStatistics.HasNoValue)
                 return;
 
-            userStatistics.Value.IncreaseDeletedCount();
+            userStatistics.Value.IncreaseDeleted();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 

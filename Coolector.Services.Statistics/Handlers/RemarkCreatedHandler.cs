@@ -66,7 +66,7 @@ namespace Coolector.Services.Statistics.Handlers
                 userStatistics = new UserStatistics(@event.UserId, @event.Username);
             }
 
-            userStatistics.Value.IncreaseReportedCount();
+            userStatistics.Value.IncreaseCreated();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 
