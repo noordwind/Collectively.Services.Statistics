@@ -3,6 +3,8 @@
     public class CategoryStatisticsDto
     {
         public string Name { get; set; }
-        public int Count { get; set; }
+        public int ReportedCount { get; set; }
+        public int ResolvedCount { get; set; }
+        public int DeletedCount { get; set; }
     }
 }

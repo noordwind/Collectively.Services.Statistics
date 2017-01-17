@@ -31,7 +31,9 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             this IMongoCollection<TagStatistics> collection,
             BrowseTagStatistics query)
         {
-            var values = collection.AsQueryable();
+            var values = collection
+                .AsQueryable()
+                .OrderByDescending(x => x.ReportedCount);
 
             return values;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Services;
+using Coolector.Common.Types;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories;
@@ -12,14 +13,20 @@ namespace Coolector.Services.Statistics.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkStatisticsRepository _remarkStatisticsRepository;
         private readonly IUserStatisticsRepository _userStatisticsRepository;
+        private readonly ICategoryStatisticsRepository _categoryStatisticsRepository;
+        private readonly ITagStatisticsRepository _tagStatisticsRepository;
 
         public RemarkResolvedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
-            IUserStatisticsRepository userStatisticsRepository)
+            IUserStatisticsRepository userStatisticsRepository,
+            ICategoryStatisticsRepository categoryStatisticsRepository,
+            ITagStatisticsRepository tagStatisticsRepository)
         {
             _handler = handler;
             _remarkStatisticsRepository = remarkStatisticsRepository;
             _userStatisticsRepository = userStatisticsRepository;
+            _categoryStatisticsRepository = categoryStatisticsRepository;
+            _tagStatisticsRepository = tagStatisticsRepository;
         }
 
         public async Task HandleAsync(RemarkResolved @event)
@@ -29,6 +36,8 @@ namespace Coolector.Services.Statistics.Handlers
                 {
                     await HandleRemarkStatisticsAsync(@event);
                     await HandleUserStatisticsAsync(@event);
+                    await HandleCategoryStatisticsAsync(@event);
+                    await HandleTagStatisticsAsync(@event);
                 })
                 .OnError((ex, logger) => logger.Error(ex, $"Error while handling {typeof(RemarkResolved).Name} event"))
                 .ExecuteAsync();
@@ -61,6 +70,40 @@ namespace Coolector.Services.Statistics.Handlers
 
             userStatistics.Value.IncreaseResolvedCount();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
+        }
+
+        private async Task HandleCategoryStatisticsAsync(RemarkResolved @event)
+        {
+            var remarkStats = await _remarkStatisticsRepository.GetAsync(@event.RemarkId);
+            if (remarkStats.HasNoValue)
+                return;
+
+            var categoryStats = await _categoryStatisticsRepository.GetByNameAsync(remarkStats.Value.Category);
+            if (categoryStats.HasNoValue)
+            {
+                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1U);
+            }
+
+            categoryStats.Value.IncreaseResolved();
+            await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStats.Value);
+        }
+
+        private async Task HandleTagStatisticsAsync(RemarkResolved @event)
+        {
+            var remarkStats = await _remarkStatisticsRepository.GetAsync(@event.RemarkId);
+            if (remarkStats.HasNoValue)
+                return;
+
+            foreach (var tag in remarkStats.Value.Tags)
+            {
+                var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
+                if (tagStats.HasNoValue)
+                {
+                    tagStats = new TagStatistics(tag, 1U);
+                }
+                tagStats.Value.IncreaseResolved();
+                await _tagStatisticsRepository.AddOrUpdateAsync(tagStats.Value);
+            }
         }
     }
 }

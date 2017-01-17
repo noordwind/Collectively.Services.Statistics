@@ -5,24 +5,35 @@ namespace Coolector.Services.Statistics.Domain
     public abstract class StatisticsBase : IdentifiableEntity
     {
         public string Name { get; protected set; }
-        public int Count { get; protected set; }
+        public uint CreatedCount { get; protected set; }
+        public uint ResolvedCount { get; protected set; }
+        public uint DeletedCount { get; protected set; }
+        public uint ReportedCount { get; protected set; }
 
         protected StatisticsBase() { }
 
-        protected StatisticsBase(string name, int count = 0)
+        protected StatisticsBase(string name, uint created = 0, uint resolved = 0, uint deleted = 0)
         {
             Name = name;
-            Count = count;
+            CreatedCount = created;
+            ResolvedCount = resolved;
+            DeletedCount = deleted;
+            ReportedCount = created - deleted;
         }
 
-        public virtual void Increase()
+        public virtual void IncreaseCreated()
         {
-            Count++;
+            CreatedCount++;
+            ReportedCount = CreatedCount - DeletedCount;
         }
-
-        public virtual void Decrease()
+        public virtual void IncreaseResolved()
         {
-            Count--;
+            ResolvedCount++;
+        }
+        public virtual void IncreaseDeleted()
+        {
+            DeletedCount++;
+            ReportedCount = CreatedCount - DeletedCount;
         }
     }
 
@@ -30,15 +41,15 @@ namespace Coolector.Services.Statistics.Domain
     {
         protected CategoryStatistics() { }
 
-        public CategoryStatistics(string name, int count = 0)
-            :base(name, count) { }
+        public CategoryStatistics(string name, uint reported = 0, uint resolved = 0, uint deleted = 0)
+            :base(name, reported, resolved, deleted) { }
     }
 
     public class TagStatistics : StatisticsBase
     {
         protected TagStatistics() { }
 
-        public TagStatistics(string name, int count = 0)
-            :base(name, count) { }
+        public TagStatistics(string name, uint reported = 0, uint resolved = 0, uint deleted = 0)
+            :base(name, reported, resolved, deleted) { }
     }
 }

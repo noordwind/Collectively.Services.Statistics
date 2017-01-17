@@ -78,7 +78,7 @@ namespace Coolector.Services.Statistics.Handlers
                 categoryStatistics = new CategoryStatistics(@event.Category.Name);
             }
 
-            categoryStatistics.Value.Increase();
+            categoryStatistics.Value.IncreaseCreated();
             await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStatistics.Value);
         }
 
@@ -95,7 +95,7 @@ namespace Coolector.Services.Statistics.Handlers
                     tagStatistic = new TagStatistics(tag);
                 }
 
-                tagStatistic.Value.Increase();
+                tagStatistic.Value.IncreaseCreated();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStatistic.Value);
             }
         }
