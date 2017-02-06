@@ -4,6 +4,5 @@ namespace Coolector.Services.Statistics.Queries
 {
     public class BrowseTagStatistics : PagedQueryBase
     {
-
     }
 }
