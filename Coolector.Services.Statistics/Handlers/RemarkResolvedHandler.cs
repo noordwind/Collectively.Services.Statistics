@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Services;
-using Coolector.Common.Types;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Services.Statistics.Repositories;
@@ -50,13 +49,13 @@ namespace Coolector.Services.Statistics.Handlers
                 return;
 
             RemarkStatistics.RemarkLocation location = null;
-            if (@event.ResolvedAtLocation != null)
+            if (@event.State.Location != null)
             {
-                location = new RemarkStatistics.RemarkLocation(@event.ResolvedAtLocation.Latitude,
-                    @event.ResolvedAtLocation.Longitude, @event.ResolvedAtLocation.Address);
+                location = new RemarkStatistics.RemarkLocation(@event.State.Location.Latitude,
+                    @event.State.Location.Longitude, @event.State.Location.Address);
             }
 
-            remarkStatistics.Value.SetResolved(@event.UserId, @event.Username, @event.ResolvedAt, location);
+            remarkStatistics.Value.SetResolved(@event.UserId, @event.State.Username, @event.State.CreatedAt, location);
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
@@ -65,7 +64,7 @@ namespace Coolector.Services.Statistics.Handlers
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
             if (userStatistics.HasNoValue)
             {
-                userStatistics = new UserStatistics(@event.UserId, @event.Username);
+                userStatistics = new UserStatistics(@event.UserId, @event.State.Username);
             }
 
             userStatistics.Value.IncreaseResolved();

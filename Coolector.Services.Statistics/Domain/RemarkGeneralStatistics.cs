@@ -1,6 +1,4 @@
-﻿using Autofac.Core;
-
-namespace Coolector.Services.Statistics.Domain
+﻿namespace Coolector.Services.Statistics.Domain
 {
     public class RemarkGeneralStatistics
     {
