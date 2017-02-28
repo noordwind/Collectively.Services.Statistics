@@ -4,11 +4,12 @@ using Coolector.Common.Extensions;
 
 namespace Coolector.Services.Statistics.Domain
 {
-    public class UserStatistics : RemarksCountStatisticsBase
+    public class UserStatistics
     {
         private ISet<Vote> _votes = new HashSet<Vote>();
         public string UserId { get; protected set; }
         public string Name { get; protected set; }
+        public RemarksCountStatistics Remarks { get; protected set; }
 
         public IEnumerable<Vote> Votes
         {
@@ -18,7 +19,7 @@ namespace Coolector.Services.Statistics.Domain
 
         protected UserStatistics() { }
 
-        public UserStatistics(string userId, string name)
+        public UserStatistics(string userId, string name, RemarksCountStatistics remarks = null)
         {
             if (userId.Empty())
             {
@@ -30,6 +31,7 @@ namespace Coolector.Services.Statistics.Domain
             }
             UserId = userId;
             Name = name;
+            Remarks = remarks ?? new RemarksCountStatistics();
         }
 
         public void AddVote(Vote vote)

@@ -58,7 +58,7 @@ namespace Coolector.Services.Statistics.Handlers
             if (userStatistics.HasNoValue)
                 return;
 
-            userStatistics.Value.IncreaseDeleted();
+            userStatistics.Value.Remarks.IncreaseDeleted();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 
@@ -71,10 +71,10 @@ namespace Coolector.Services.Statistics.Handlers
             var categoryStats = await _categoryStatisticsRepository.GetByNameAsync(remarkStats.Value.Category);
             if (categoryStats.HasNoValue)
             {
-                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1);
+                categoryStats = new CategoryStatistics(remarkStats.Value.Category, new RemarksCountStatistics(reported: 1, deleted: 1));
             }
 
-            categoryStats.Value.IncreaseDeleted();
+            categoryStats.Value.Remarks.IncreaseDeleted();
             await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStats.Value);
         }
 
@@ -89,9 +89,9 @@ namespace Coolector.Services.Statistics.Handlers
                 var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStats.HasNoValue)
                 {
-                    tagStats = new TagStatistics(tag, 1);
+                    tagStats = new TagStatistics(tag, new RemarksCountStatistics(reported: 1, deleted: 1));
                 }
-                tagStats.Value.IncreaseDeleted();
+                tagStats.Value.Remarks.IncreaseDeleted();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStats.Value);
             }
         }

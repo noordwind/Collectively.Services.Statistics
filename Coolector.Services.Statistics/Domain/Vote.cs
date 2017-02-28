@@ -4,11 +4,11 @@ namespace Coolector.Services.Statistics.Domain
 {
     public class Vote
     {
-        public DateTime CreatedAt { get; set; }
-        public string UserId { get; set; }
-        public Guid RemarkId { get; set; }
-        public bool Positive { get; set; }
-        public bool Deleted { get; set; }
+        public string UserId { get; protected set; }
+        public Guid RemarkId { get; protected set; }
+        public bool Positive { get; protected set; }
+        public bool Deleted { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
 
         protected Vote()
         {
@@ -20,6 +20,7 @@ namespace Coolector.Services.Statistics.Domain
             UserId = vote.UserId;
             RemarkId = vote.RemarkId;
             Positive = vote.Positive;
+            CreatedAt = vote.CreatedAt;
         }
 
         public static Vote CreatePositiveVote(string userId, Guid remarkId)

@@ -35,15 +35,15 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         {
             var from = query.From.GetValueOrDefault(default(DateTime));
             var to = query.To.GetValueOrDefault(DateTime.MaxValue);
-            var reportedCount = await statistics.AsQueryable()
+            var reported = await statistics.AsQueryable()
                 .CountAsync(x => x.CreatedAt > from 
                 && x.CreatedAt < to);
-            var resolvedCount = await statistics.AsQueryable()
+            var resvoled = await statistics.AsQueryable()
                 .CountAsync(x => x.State.State == "resolved"
                 && x.State.CreatedAt > from
                 && x.State.CreatedAt < to);
 
-            return new RemarksCountStatistics(reportedCount, resolvedCount);
+            return new RemarksCountStatistics(reported: reported, resolved: resvoled);
         }
     }
 }

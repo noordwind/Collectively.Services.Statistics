@@ -30,10 +30,10 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             switch (query.OrderBy?.ToLowerInvariant())
             {
                 case "reported":
-                    values = values.OrderByDescending(x => x.ReportedCount);
+                    values = values.OrderByDescending(x => x.Remarks.ReportedCount);
                     break;
                 case "resolved":
-                    values = values.OrderByDescending(x => x.ResolvedCount);
+                    values = values.OrderByDescending(x => x.Remarks.ResolvedCount);
                     break;
             }
 

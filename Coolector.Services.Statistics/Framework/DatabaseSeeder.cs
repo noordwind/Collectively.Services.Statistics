@@ -25,8 +25,8 @@ namespace Coolector.Services.Statistics.Framework
                 {
                     Unique = true,
                 });
-                var reportedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.ReportedCount);
-                var resolvedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.ResolvedCount);
+                var reportedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.Remarks.ReportedCount);
+                var resolvedIndex = new IndexKeysDefinitionBuilder<UserStatistics>().Descending(x => x.Remarks.ResolvedCount);
                 await _database.UserStatistics().Indexes.CreateOneAsync(reportedIndex);
                 await _database.UserStatistics().Indexes.CreateOneAsync(resolvedIndex);
             }

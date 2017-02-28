@@ -33,7 +33,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         {
             var values = collection
                 .AsQueryable()
-                .OrderByDescending(x => x.ReportedCount);
+                .OrderByDescending(x => x.Remarks.ReportedCount);
 
             return values;
         }

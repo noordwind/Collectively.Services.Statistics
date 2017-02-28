@@ -12,6 +12,7 @@ namespace Coolector.Services.Statistics.Domain
         public Guid RemarkId { get; protected set; }
         public User Author { get; protected set; }
         public string Category { get; protected set; }
+        public Location Location { get; protected set; }
         public string Description { get; protected set; }
         public RemarkState State { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
@@ -49,8 +50,8 @@ namespace Coolector.Services.Statistics.Domain
             CreatedAt = createdAt;
             Description = description;
             Tags = tags ?? new HashSet<string>();
-            var location = new Location(latitude, longitude, address);
-            var remarkState = new RemarkState(state, authorId, location: location);
+            Location = new Location(latitude, longitude, address);
+            var remarkState = new RemarkState(state, authorId, location: Location);
             AddState(remarkState);
         }
 

@@ -64,10 +64,11 @@ namespace Coolector.Services.Statistics.Handlers
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
             if (userStatistics.HasNoValue)
             {
-                userStatistics = new UserStatistics(@event.UserId, @event.State.Username);
+                userStatistics = new UserStatistics(@event.UserId, @event.State.Username,
+                    new RemarksCountStatistics(reported: 1, resolved: 1));
             }
 
-            userStatistics.Value.IncreaseResolved();
+            userStatistics.Value.Remarks.IncreaseResolved();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 
@@ -80,10 +81,11 @@ namespace Coolector.Services.Statistics.Handlers
             var categoryStats = await _categoryStatisticsRepository.GetByNameAsync(remarkStats.Value.Category);
             if (categoryStats.HasNoValue)
             {
-                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1);
+                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 
+                    new RemarksCountStatistics(reported: 1, resolved: 1));
             }
 
-            categoryStats.Value.IncreaseResolved();
+            categoryStats.Value.Remarks.IncreaseResolved();
             await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStats.Value);
         }
 
@@ -98,9 +100,9 @@ namespace Coolector.Services.Statistics.Handlers
                 var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStats.HasNoValue)
                 {
-                    tagStats = new TagStatistics(tag, 1);
+                    tagStats = new TagStatistics(tag, new RemarksCountStatistics(reported: 1, resolved: 1));
                 }
-                tagStats.Value.IncreaseResolved();
+                tagStats.Value.Remarks.IncreaseResolved();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStats.Value);
             }
         }

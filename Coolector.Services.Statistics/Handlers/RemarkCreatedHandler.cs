@@ -63,10 +63,11 @@ namespace Coolector.Services.Statistics.Handlers
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
             if (userStatistics.HasNoValue)
             {
-                userStatistics = new UserStatistics(@event.UserId, @event.Username);
+                userStatistics = new UserStatistics(@event.UserId, @event.Username,
+                    new RemarksCountStatistics(@new: 1, reported: 1));
             }
 
-            userStatistics.Value.IncreaseReported();
+            userStatistics.Value.Remarks.IncreaseReported();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 
@@ -75,10 +76,11 @@ namespace Coolector.Services.Statistics.Handlers
             var categoryStatistics = await _categoryStatisticsRepository.GetByNameAsync(@event.Category.Name);
             if (categoryStatistics.HasNoValue)
             {
-                categoryStatistics = new CategoryStatistics(@event.Category.Name);
+                categoryStatistics = new CategoryStatistics(@event.Category.Name, 
+                    new RemarksCountStatistics(@new: 1, reported: 1));
             }
 
-            categoryStatistics.Value.IncreaseReported();
+            categoryStatistics.Value.Remarks.IncreaseReported();
             await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStatistics.Value);
         }
 
@@ -92,10 +94,10 @@ namespace Coolector.Services.Statistics.Handlers
                 var tagStatistic = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStatistic.HasNoValue)
                 {
-                    tagStatistic = new TagStatistics(tag);
+                    tagStatistic = new TagStatistics(tag, new RemarksCountStatistics(@new: 1, reported: 1));
                 }
 
-                tagStatistic.Value.IncreaseReported();
+                tagStatistic.Value.Remarks.IncreaseReported();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStatistic.Value);
             }
         }

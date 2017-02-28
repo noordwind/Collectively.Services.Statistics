@@ -27,7 +27,7 @@ namespace Coolector.Services.Statistics.Modules
 
             Get("remarks/general", async args => await Fetch<GetRemarkGeneralStatistics, RemarksCountStatistics>
                 (async x => await remarkStatisticsRepository.GetGeneralStatisticsAsync(x))
-                .MapTo<RemarkGeneralStatisticsDto>()
+                .MapTo<RemarksCountStatisticsDto>()
                 .HandleAsync());
 
             Get("categories", async args => await FetchCollection<BrowseCategoryStatistics, CategoryStatistics>

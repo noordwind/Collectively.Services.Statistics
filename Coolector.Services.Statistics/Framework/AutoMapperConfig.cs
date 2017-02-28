@@ -10,11 +10,13 @@ namespace Coolector.Services.Statistics.Framework
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserStatistics, UserStatisticsDto>();
+                cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<Location, LocationDto>();
+                cfg.CreateMap<Vote, VoteDto>();
+                cfg.CreateMap<RemarkState, RemarkStateDto>();
+                cfg.CreateMap<RemarksCountStatistics, RemarksCountStatisticsDto>();
                 cfg.CreateMap<RemarkStatistics, RemarkStatisticsDto>();
-                cfg.CreateMap<User, RemarkStatisticsDto.UserDto>();
-                cfg.CreateMap<Location, RemarkStatisticsDto.LocationDto>();
-                cfg.CreateMap<RemarksCountStatistics, RemarkGeneralStatisticsDto>();
+                cfg.CreateMap<UserStatistics, UserStatisticsDto>();
                 cfg.CreateMap<CategoryStatistics, CategoryStatisticsDto>();
                 cfg.CreateMap<TagStatistics, TagStatisticsDto>();
             });

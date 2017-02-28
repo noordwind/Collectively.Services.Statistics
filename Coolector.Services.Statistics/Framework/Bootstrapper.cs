@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using Autofac;
 using Coolector.Common.Events;
 using Coolector.Common.Exceptionless;
@@ -20,8 +16,6 @@ using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Newtonsoft.Json;
 using NLog;
-using Polly;
-using RabbitMQ.Client.Exceptions;
 using RawRabbit.Configuration;
 
 namespace Coolector.Services.Statistics.Framework
