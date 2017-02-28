@@ -1,10 +1,25 @@
-﻿namespace Coolector.Services.Statistics.Domain
+﻿using System;
+using Coolector.Common.Extensions;
+
+namespace Coolector.Services.Statistics.Domain
 {
-    public class CategoryStatistics : StatisticsBase
+    public class CategoryStatistics : RemarksCountStatisticsBase
     {
+        public string Name { get; protected set; }
+
         protected CategoryStatistics() { }
 
-        public CategoryStatistics(string name, uint reported = 0, uint resolved = 0, uint deleted = 0)
-            :base(name, reported, resolved, deleted) { }
+        public CategoryStatistics(string name, int @new = 0, int reported = 0, 
+                int processing = 0, int resolved = 0, int canceled = 0, 
+                int deleted = 0, int renewed = 0)
+            : base(@new, reported, processing, resolved,
+                canceled, deleted, renewed) 
+        {
+            if (name.Empty())
+            {
+                throw new ArgumentException("Category name can not be empty.", nameof(name));
+            }
+            Name = name;
+        }
     }
 }

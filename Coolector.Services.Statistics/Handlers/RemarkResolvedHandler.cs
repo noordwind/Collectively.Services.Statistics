@@ -48,14 +48,14 @@ namespace Coolector.Services.Statistics.Handlers
             if (remarkStatistics.HasNoValue)
                 return;
 
-            RemarkStatistics.RemarkLocation location = null;
+            Location location = null;
             if (@event.State.Location != null)
             {
-                location = new RemarkStatistics.RemarkLocation(@event.State.Location.Latitude,
+                location = new Location(@event.State.Location.Latitude,
                     @event.State.Location.Longitude, @event.State.Location.Address);
             }
 
-            remarkStatistics.Value.SetResolved(@event.UserId, @event.State.Username, @event.State.CreatedAt, location);
+            remarkStatistics.Value.AddState(new RemarkState(@event.State.State, @event.UserId, location: location));
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
@@ -80,7 +80,7 @@ namespace Coolector.Services.Statistics.Handlers
             var categoryStats = await _categoryStatisticsRepository.GetByNameAsync(remarkStats.Value.Category);
             if (categoryStats.HasNoValue)
             {
-                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1U);
+                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1);
             }
 
             categoryStats.Value.IncreaseResolved();
@@ -98,7 +98,7 @@ namespace Coolector.Services.Statistics.Handlers
                 var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStats.HasNoValue)
                 {
-                    tagStats = new TagStatistics(tag, 1U);
+                    tagStats = new TagStatistics(tag, 1);
                 }
                 tagStats.Value.IncreaseResolved();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStats.Value);

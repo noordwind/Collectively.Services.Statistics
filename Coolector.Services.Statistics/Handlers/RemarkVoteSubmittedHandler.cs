@@ -28,8 +28,8 @@ namespace Coolector.Services.Statistics.Handlers
                 .Run(async () =>
                 {
                     var vote = @event.Positive
-                        ? VoteStatistics.CreatePositiveVote(@event.UserId, @event.RemarkId)
-                        : VoteStatistics.CreateNegativeVote(@event.UserId, @event.RemarkId);
+                        ? Vote.CreatePositiveVote(@event.UserId, @event.RemarkId)
+                        : Vote.CreateNegativeVote(@event.UserId, @event.RemarkId);
                     await _remarkStatisticsRepository.AddVoteAsync(vote);
                     await _userStatisticsRepository.AddVoteAsync(vote);
                 })

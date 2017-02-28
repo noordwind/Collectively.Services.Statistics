@@ -2,7 +2,7 @@
 
 namespace Coolector.Services.Statistics.Domain
 {
-    public class VoteStatistics
+    public class Vote
     {
         public DateTime CreatedAt { get; set; }
         public string UserId { get; set; }
@@ -10,20 +10,20 @@ namespace Coolector.Services.Statistics.Domain
         public bool Positive { get; set; }
         public bool Deleted { get; set; }
 
-        protected VoteStatistics()
+        protected Vote()
         {
             
         }
 
-        protected VoteStatistics(VoteStatistics vote)
+        protected Vote(Vote vote)
         {
             UserId = vote.UserId;
             RemarkId = vote.RemarkId;
             Positive = vote.Positive;
         }
 
-        public static VoteStatistics CreatePositiveVote(string userId, Guid remarkId)
-            => new VoteStatistics
+        public static Vote CreatePositiveVote(string userId, Guid remarkId)
+            => new Vote
             {
                 CreatedAt = DateTime.UtcNow,
                 UserId = userId,
@@ -32,8 +32,8 @@ namespace Coolector.Services.Statistics.Domain
                 Deleted = false
             };
 
-        public static VoteStatistics CreateNegativeVote(string userId, Guid remarkId)
-            => new VoteStatistics
+        public static Vote CreateNegativeVote(string userId, Guid remarkId)
+            => new Vote
             {
                 CreatedAt = DateTime.UtcNow,
                 UserId = userId,
@@ -42,8 +42,8 @@ namespace Coolector.Services.Statistics.Domain
                 Deleted = false
             };
 
-        public static VoteStatistics CreateDeletedVote(VoteStatistics vote)
-            => new VoteStatistics(vote)
+        public static Vote CreateDeletedVote(Vote vote)
+            => new Vote(vote)
             {
                 CreatedAt = DateTime.UtcNow,
                 Deleted = true

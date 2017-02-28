@@ -25,7 +25,7 @@ namespace Coolector.Services.Statistics.Repositories
                     .Query(query)
                     .PaginateAsync();
 
-        public async Task<Maybe<RemarkGeneralStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
+        public async Task<Maybe<RemarksCountStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
             => await _database.RemarkStatistics()
                 .CalculateGeneralStatisticsAsync(query);
 
@@ -35,18 +35,18 @@ namespace Coolector.Services.Statistics.Repositories
         public async Task AddOrUpdateAsync(RemarkStatistics statistics)
             => await _database.RemarkStatistics().AddOrUpdateAsync(statistics);
 
-        public async Task<Maybe<PagedResult<VoteStatistics>>> BrowseVotesAsync(BrowseRemarkVotes query)
+        public async Task<Maybe<PagedResult<Vote>>> BrowseVotesAsync(BrowseRemarkVotes query)
         {
             var remarkStats = await GetAsync(query.RemarkId);
             if (remarkStats.HasNoValue || remarkStats.Value.Votes == null)
             {
-                return PagedResult<VoteStatistics>.Empty;
+                return PagedResult<Vote>.Empty;
             }
 
             return remarkStats.Value.Votes.Paginate(query);
         }
 
-        public async Task AddVoteAsync(VoteStatistics vote)
+        public async Task AddVoteAsync(Vote vote)
         {
             var remarkStats = await _database.RemarkStatistics()
                 .GetAsync(vote.RemarkId);

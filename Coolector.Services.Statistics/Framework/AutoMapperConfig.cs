@@ -12,9 +12,9 @@ namespace Coolector.Services.Statistics.Framework
             {
                 cfg.CreateMap<UserStatistics, UserStatisticsDto>();
                 cfg.CreateMap<RemarkStatistics, RemarkStatisticsDto>();
-                cfg.CreateMap<RemarkStatistics.RemarkUser, RemarkStatisticsDto.UserDto>();
-                cfg.CreateMap<RemarkStatistics.RemarkLocation, RemarkStatisticsDto.LocationDto>();
-                cfg.CreateMap<RemarkGeneralStatistics, RemarkGeneralStatisticsDto>();
+                cfg.CreateMap<User, RemarkStatisticsDto.UserDto>();
+                cfg.CreateMap<Location, RemarkStatisticsDto.LocationDto>();
+                cfg.CreateMap<RemarksCountStatistics, RemarkGeneralStatisticsDto>();
                 cfg.CreateMap<CategoryStatistics, CategoryStatisticsDto>();
                 cfg.CreateMap<TagStatistics, TagStatisticsDto>();
             });

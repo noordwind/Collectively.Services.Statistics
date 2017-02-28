@@ -39,7 +39,7 @@ namespace Coolector.Services.Statistics.Handlers
                     {
                         var originalVote = votes.Value.Items
                             .LastOrDefault(x => x.UserId == @event.UserId);
-                        var vote = VoteStatistics.CreateDeletedVote(originalVote);
+                        var vote = Vote.CreateDeletedVote(originalVote);
                         await _remarkStatisticsRepository.AddVoteAsync(vote);
                     }
                 })
@@ -58,7 +58,7 @@ namespace Coolector.Services.Statistics.Handlers
                     {
                         var originalVote = votes.Value.Items
                             .LastOrDefault(x => x.RemarkId == @event.RemarkId);
-                        var vote = VoteStatistics.CreateDeletedVote(originalVote);
+                        var vote = Vote.CreateDeletedVote(originalVote);
                         await _userStatisticsRepository.AddVoteAsync(vote);
                     }
                 })

@@ -8,16 +8,11 @@
     "projectUrl": "https://github.com/noordwind/Coolector.Services.Statistics",
     "packageType": "DotnetCliTool"
   },
-
   "dependencies": {
     "Coolector.Common": "1.0.*" 
   },
-
   "frameworks": {
     "netstandard1.6": {
-      "dependencies": {
-        "NETStandard.Library": "1.6.1"
-      }
     }
   }
 }

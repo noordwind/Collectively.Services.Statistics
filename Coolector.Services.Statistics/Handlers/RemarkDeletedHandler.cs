@@ -48,7 +48,7 @@ namespace Coolector.Services.Statistics.Handlers
             if (remarkStatistics.HasNoValue)
                 return;
 
-            remarkStatistics.Value.SetDeleted();
+            remarkStatistics.Value.AddState(new RemarkState("deleted", @event.UserId));
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
@@ -71,7 +71,7 @@ namespace Coolector.Services.Statistics.Handlers
             var categoryStats = await _categoryStatisticsRepository.GetByNameAsync(remarkStats.Value.Category);
             if (categoryStats.HasNoValue)
             {
-                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1U);
+                categoryStats = new CategoryStatistics(remarkStats.Value.Category, 1);
             }
 
             categoryStats.Value.IncreaseDeleted();
@@ -89,7 +89,7 @@ namespace Coolector.Services.Statistics.Handlers
                 var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStats.HasNoValue)
                 {
-                    tagStats = new TagStatistics(tag, 1U);
+                    tagStats = new TagStatistics(tag, 1);
                 }
                 tagStats.Value.IncreaseDeleted();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStats.Value);

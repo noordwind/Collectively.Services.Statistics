@@ -50,9 +50,9 @@ namespace Coolector.Services.Statistics.Handlers
             {
                 remarkStatistics = new RemarkStatistics(@event.RemarkId,
                     @event.Category.Name, @event.UserId, @event.Username,
-                    @event.CreatedAt, @event.Location.Latitude, 
-                    @event.Location.Longitude, @event.Location.Address,
-                    @event.Description, @event.Tags);
+                    @event.CreatedAt, @event.State.State, 
+                    @event.Location.Latitude, @event.Location.Longitude, 
+                    @event.Location.Address, @event.Description, @event.Tags);
             }
 
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
@@ -66,7 +66,7 @@ namespace Coolector.Services.Statistics.Handlers
                 userStatistics = new UserStatistics(@event.UserId, @event.Username);
             }
 
-            userStatistics.Value.IncreaseCreated();
+            userStatistics.Value.IncreaseReported();
             await _userStatisticsRepository.AddOrUpdateAsync(userStatistics.Value);
         }
 
@@ -78,7 +78,7 @@ namespace Coolector.Services.Statistics.Handlers
                 categoryStatistics = new CategoryStatistics(@event.Category.Name);
             }
 
-            categoryStatistics.Value.IncreaseCreated();
+            categoryStatistics.Value.IncreaseReported();
             await _categoryStatisticsRepository.AddOrUpdateAsync(categoryStatistics.Value);
         }
 
@@ -95,7 +95,7 @@ namespace Coolector.Services.Statistics.Handlers
                     tagStatistic = new TagStatistics(tag);
                 }
 
-                tagStatistic.Value.IncreaseCreated();
+                tagStatistic.Value.IncreaseReported();
                 await _tagStatisticsRepository.AddOrUpdateAsync(tagStatistic.Value);
             }
         }

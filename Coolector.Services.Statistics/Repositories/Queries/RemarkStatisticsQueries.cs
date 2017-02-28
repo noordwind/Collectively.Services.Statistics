@@ -29,7 +29,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             return values;
         }
 
-        public static async Task<RemarkGeneralStatistics> CalculateGeneralStatisticsAsync(
+        public static async Task<RemarksCountStatistics> CalculateGeneralStatisticsAsync(
             this IMongoCollection<RemarkStatistics> statistics,
             GetRemarkGeneralStatistics query)
         {
@@ -39,11 +39,11 @@ namespace Coolector.Services.Statistics.Repositories.Queries
                 .CountAsync(x => x.CreatedAt > from 
                 && x.CreatedAt < to);
             var resolvedCount = await statistics.AsQueryable()
-                .CountAsync(x => x.ResolvedAt != null
-                && x.ResolvedAt > from
-                && x.ResolvedAt < to);
+                .CountAsync(x => x.State.State == "resolved"
+                && x.State.CreatedAt > from
+                && x.State.CreatedAt < to);
 
-            return new RemarkGeneralStatistics(reportedCount, resolvedCount);
+            return new RemarksCountStatistics(reportedCount, resolvedCount);
         }
     }
 }

@@ -32,18 +32,18 @@ namespace Coolector.Services.Statistics.Repositories
         public async Task AddOrUpdateAsync(UserStatistics statistics)
             => await _database.UserStatistics().AddOrUpdateAsync(statistics);
 
-        public async Task<Maybe<PagedResult<VoteStatistics>>> BrowseVotesAsync(BrowseUserVotes query)
+        public async Task<Maybe<PagedResult<Vote>>> BrowseVotesAsync(BrowseUserVotes query)
         {
             var userStats = await GetByIdAsync(query.UserId);
             if (userStats.HasNoValue || userStats.Value.Votes == null)
             {
-                return PagedResult<VoteStatistics>.Empty;
+                return PagedResult<Vote>.Empty;
             }
 
             return userStats.Value.Votes.Paginate(query);
         }
 
-        public async Task AddVoteAsync(VoteStatistics vote)
+        public async Task AddVoteAsync(Vote vote)
         {
             var userStats = await _database.UserStatistics()
                 .GetByIdAsync(vote.UserId);

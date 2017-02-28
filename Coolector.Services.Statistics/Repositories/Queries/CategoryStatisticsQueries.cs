@@ -21,7 +21,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
         public static async Task AddOrUpdateAsync(this IMongoCollection<CategoryStatistics> collection,
             CategoryStatistics statistics)
         {
-            await collection.ReplaceOneAsync(x => x.Id == statistics.Id, statistics, new UpdateOptions
+            await collection.ReplaceOneAsync(x => x.Name == statistics.Name, statistics, new UpdateOptions
             {
                 IsUpsert = true
             });

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Services.Statistics.Domain;
 using Coolector.Common.Mongo;
-using Coolector.Common.Types;
 using Coolector.Services.Statistics.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -20,7 +19,7 @@ namespace Coolector.Services.Statistics.Repositories.Queries
             => await userStatistics.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
 
         public static async Task AddOrUpdateAsync(this IMongoCollection<UserStatistics> userStatistics, UserStatistics user)
-            => await userStatistics.ReplaceOneAsync(x => x.Id == user.Id, user, new UpdateOptions
+            => await userStatistics.ReplaceOneAsync(x => x.UserId == user.UserId, user, new UpdateOptions
             {
                 IsUpsert = true
             });
