@@ -5,7 +5,6 @@ using Collectively.Common.Exceptionless;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
 using Collectively.Common.Nancy;
-using Nancy.Serialization.JsonNet;
 using Collectively.Common.RabbitMq;
 using Collectively.Common.Security;
 using Collectively.Common.Services;
@@ -48,7 +47,7 @@ namespace Collectively.Services.Statistics.Framework
 
             container.Update(builder =>
             {
-                builder.RegisterType<JsonNetSerializer>().As<JsonSerializer>().SingleInstance();
+                builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
