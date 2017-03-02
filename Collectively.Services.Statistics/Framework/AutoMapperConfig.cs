@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Collectively.Services.Statistics.Domain;
-
+using Collectively.Services.Statistics.Dto;
 
 namespace Collectively.Services.Statistics.Framework
 {

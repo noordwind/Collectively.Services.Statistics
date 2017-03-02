@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Collectively.Services.Statistics.Domain;
+using Collectively.Services.Statistics.Dto;
 using Collectively.Services.Statistics.Repositories;
-
 using Collectively.Services.Statistics.Queries;
 
 namespace Collectively.Services.Statistics.Modules

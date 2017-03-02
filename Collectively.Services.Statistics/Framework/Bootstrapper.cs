@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
-using Collectively.Common.Events;
+using Collectively.Messages.Events;
 using Collectively.Common.Exceptionless;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;

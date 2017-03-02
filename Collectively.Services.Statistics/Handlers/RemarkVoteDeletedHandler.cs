@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Collectively.Common.Events;
+using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Statistics.Domain;
