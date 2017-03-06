@@ -4,6 +4,8 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Statistics.Domain;
 using Collectively.Services.Statistics.Repositories;
+using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Statistics.Dto;
 
 namespace Collectively.Services.Statistics.Handlers
 {
@@ -14,18 +16,21 @@ namespace Collectively.Services.Statistics.Handlers
         private readonly IUserStatisticsRepository _userStatisticsRepository;
         private readonly ICategoryStatisticsRepository _categoryStatisticsRepository;
         private readonly ITagStatisticsRepository _tagStatisticsRepository;
+        private readonly IRemarkServiceClient _remarkServiceClient;
 
         public RemarkResolvedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
             ICategoryStatisticsRepository categoryStatisticsRepository,
-            ITagStatisticsRepository tagStatisticsRepository)
+            ITagStatisticsRepository tagStatisticsRepository,
+            IRemarkServiceClient remarkServiceClient)
         {
             _handler = handler;
             _remarkStatisticsRepository = remarkStatisticsRepository;
             _userStatisticsRepository = userStatisticsRepository;
             _categoryStatisticsRepository = categoryStatisticsRepository;
             _tagStatisticsRepository = tagStatisticsRepository;
+            _remarkServiceClient = remarkServiceClient;
         }
 
         public async Task HandleAsync(RemarkResolved @event)
@@ -48,23 +53,25 @@ namespace Collectively.Services.Statistics.Handlers
             if (remarkStatistics.HasNoValue)
                 return;
 
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
             Location location = null;
-            if (@event.State.Location != null)
+            if (remark.Value.State.Location != null)
             {
-                location = new Location(@event.State.Location.Latitude,
-                    @event.State.Location.Longitude, @event.State.Location.Address);
+                location = new Location(remark.Value.State.Location.Latitude,
+                    remark.Value.Location.Longitude, remark.Value.Location.Address);
             }
 
-            remarkStatistics.Value.AddState(new RemarkState(@event.State.State, @event.UserId, location: location));
+            remarkStatistics.Value.AddState(new RemarkState(remark.Value.State.State, @event.UserId, location: location));
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
         }
 
         private async Task HandleUserStatisticsAsync(RemarkResolved @event)
         {
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
             if (userStatistics.HasNoValue)
             {
-                userStatistics = new UserStatistics(@event.UserId, @event.State.Username,
+                userStatistics = new UserStatistics(@event.UserId, remark.Value.State.User.Name,
                     new RemarksCountStatistics(reported: 1, resolved: 1));
             }
 

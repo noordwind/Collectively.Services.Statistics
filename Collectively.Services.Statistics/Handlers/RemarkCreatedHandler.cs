@@ -5,6 +5,8 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Statistics.Domain;
 using Collectively.Services.Statistics.Repositories;
+using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Statistics.Dto;
 
 namespace Collectively.Services.Statistics.Handlers
 {
@@ -15,18 +17,21 @@ namespace Collectively.Services.Statistics.Handlers
         private readonly IUserStatisticsRepository _userStatisticsRepository;
         private readonly ICategoryStatisticsRepository _categoryStatisticsRepository;
         private readonly ITagStatisticsRepository _tagStatisticsRepository;
+        private readonly IRemarkServiceClient _remarkServiceClient;
 
         public RemarkCreatedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
             ICategoryStatisticsRepository categoryStatisticsRepository,
-            ITagStatisticsRepository tagStatisticsRepository)
+            ITagStatisticsRepository tagStatisticsRepository,
+            IRemarkServiceClient remarkServiceClient)
         {
             _handler = handler;
             _remarkStatisticsRepository = remarkStatisticsRepository;
             _userStatisticsRepository = userStatisticsRepository;
             _categoryStatisticsRepository = categoryStatisticsRepository;
             _tagStatisticsRepository = tagStatisticsRepository;
+            _remarkServiceClient = remarkServiceClient;
         }
 
         public async Task HandleAsync(RemarkCreated @event)
@@ -46,13 +51,14 @@ namespace Collectively.Services.Statistics.Handlers
         private async Task HandleRemarkStatisticsAsync(RemarkCreated @event)
         {
             var remarkStatistics = await _remarkStatisticsRepository.GetAsync(@event.RemarkId);
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
             if (remarkStatistics.HasNoValue)
             {
                 remarkStatistics = new RemarkStatistics(@event.RemarkId,
-                    @event.Category.Name, @event.UserId, @event.Username,
-                    @event.CreatedAt, @event.State.State, 
-                    @event.Location.Latitude, @event.Location.Longitude, 
-                    @event.Location.Address, @event.Description, @event.Tags);
+                    remark.Value.Category.Name, @event.UserId, remark.Value.Author.Name,
+                    remark.Value.CreatedAt, remark.Value.State.State, 
+                    remark.Value.Location.Latitude, remark.Value.Location.Longitude, 
+                    remark.Value.Location.Address, remark.Value.Description, remark.Value.Tags);
             }
 
             await _remarkStatisticsRepository.AddOrUpdateAsync(remarkStatistics.Value);
@@ -60,10 +66,11 @@ namespace Collectively.Services.Statistics.Handlers
 
         private async Task HandleUserStatisticsAsync(RemarkCreated @event)
         {
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
             if (userStatistics.HasNoValue)
             {
-                userStatistics = new UserStatistics(@event.UserId, @event.Username,
+                userStatistics = new UserStatistics(@event.UserId, remark.Value.Author.Name,
                     new RemarksCountStatistics(@new: 1, reported: 1));
             }
 
@@ -73,10 +80,11 @@ namespace Collectively.Services.Statistics.Handlers
 
         private async Task HandleCategoryStatisticsAsync(RemarkCreated @event)
         {
-            var categoryStatistics = await _categoryStatisticsRepository.GetByNameAsync(@event.Category.Name);
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
+            var categoryStatistics = await _categoryStatisticsRepository.GetByNameAsync(remark.Value.Category.Name);
             if (categoryStatistics.HasNoValue)
             {
-                categoryStatistics = new CategoryStatistics(@event.Category.Name, 
+                categoryStatistics = new CategoryStatistics(remark.Value.Category.Name, 
                     new RemarksCountStatistics(@new: 1, reported: 1));
             }
 
@@ -86,10 +94,11 @@ namespace Collectively.Services.Statistics.Handlers
 
         private async Task HandleTagStatisticsAsync(RemarkCreated @event)
         {
-            if (@event.Tags == null || @event.Tags.Any() == false)
+            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
+            if (@remark.Value.Tags == null || @remark.Value.Tags.Any() == false)
                 return;
 
-            foreach (var tag in @event.Tags)
+            foreach (var tag in @remark.Value.Tags)
             {
                 var tagStatistic = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStatistic.HasNoValue)

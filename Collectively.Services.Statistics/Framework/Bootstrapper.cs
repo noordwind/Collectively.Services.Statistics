@@ -17,6 +17,7 @@ using Nancy.Configuration;
 using Newtonsoft.Json;
 using NLog;
 using RawRabbit.Configuration;
+using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Statistics.Framework
 {
@@ -50,6 +51,7 @@ namespace Collectively.Services.Statistics.Framework
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
+                builder.RegisterModule<ServiceClientModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>();
                 builder.RegisterInstance(AutoMapperConfig.InitializeMapper());
