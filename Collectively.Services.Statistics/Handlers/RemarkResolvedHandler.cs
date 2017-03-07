@@ -4,8 +4,8 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Statistics.Domain;
 using Collectively.Services.Statistics.Repositories;
-using Collectively.Common.ServiceClients.Remarks;
 using Collectively.Services.Statistics.Dto;
+using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Statistics.Handlers
 {
@@ -16,21 +16,21 @@ namespace Collectively.Services.Statistics.Handlers
         private readonly IUserStatisticsRepository _userStatisticsRepository;
         private readonly ICategoryStatisticsRepository _categoryStatisticsRepository;
         private readonly ITagStatisticsRepository _tagStatisticsRepository;
-        private readonly IRemarkServiceClient _remarkServiceClient;
+        private readonly IServiceClient _serviceClient;
 
         public RemarkResolvedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
             ICategoryStatisticsRepository categoryStatisticsRepository,
             ITagStatisticsRepository tagStatisticsRepository,
-            IRemarkServiceClient remarkServiceClient)
+            IServiceClient serviceClient)
         {
             _handler = handler;
             _remarkStatisticsRepository = remarkStatisticsRepository;
             _userStatisticsRepository = userStatisticsRepository;
             _categoryStatisticsRepository = categoryStatisticsRepository;
             _tagStatisticsRepository = tagStatisticsRepository;
-            _remarkServiceClient = remarkServiceClient;
+            _serviceClient = serviceClient;
         }
 
         public async Task HandleAsync(RemarkResolved @event)
@@ -53,7 +53,7 @@ namespace Collectively.Services.Statistics.Handlers
             if (remarkStatistics.HasNoValue)
                 return;
 
-            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
+            var remark = await _serviceClient.GetAsync<RemarkDto>(@event.Resource);
             Location location = null;
             if (remark.Value.State.Location != null)
             {
@@ -68,7 +68,7 @@ namespace Collectively.Services.Statistics.Handlers
         private async Task HandleUserStatisticsAsync(RemarkResolved @event)
         {
             var userStatistics = await _userStatisticsRepository.GetByIdAsync(@event.UserId);
-            var remark = await _remarkServiceClient.GetAsync<RemarkDto>(@event.RemarkId);
+            var remark = await _serviceClient.GetAsync<RemarkDto>(@event.Resource);
             if (userStatistics.HasNoValue)
             {
                 userStatistics = new UserStatistics(@event.UserId, remark.Value.State.User.Name,

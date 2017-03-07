@@ -4,7 +4,7 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Statistics.Domain;
 using Collectively.Services.Statistics.Repositories;
-using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Statistics.Handlers
 {
@@ -15,21 +15,21 @@ namespace Collectively.Services.Statistics.Handlers
         private readonly IUserStatisticsRepository _userStatisticsRepository;
         private readonly ICategoryStatisticsRepository _categoryStatisticsRepository;
         private readonly ITagStatisticsRepository _tagStatisticsRepository;
-        private readonly IRemarkServiceClient _remarkServiceClient;
+        private readonly IServiceClient _serviceClient;
 
         public RemarkDeletedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
             ICategoryStatisticsRepository categoryStatisticsRepository,
             ITagStatisticsRepository tagStatisticsRepository,
-            IRemarkServiceClient remarkServiceClient)
+            IServiceClient serviceClient)
         {
             _handler = handler;
             _remarkStatisticsRepository = remarkStatisticsRepository;
             _userStatisticsRepository = userStatisticsRepository;
             _categoryStatisticsRepository = categoryStatisticsRepository;
             _tagStatisticsRepository = tagStatisticsRepository;
-            _remarkServiceClient = remarkServiceClient;
+            _serviceClient = serviceClient;
         }
 
         public async Task HandleAsync(RemarkDeleted @event)
