@@ -71,7 +71,7 @@ namespace Collectively.Services.Statistics.Handlers
             if (userStatistics.HasNoValue)
             {
                 userStatistics = new UserStatistics(@event.UserId, remark.Value.Author.Name,
-                    new RemarksCountStatistics(@new: 1, reported: 1));
+                    new RemarksCountStatistics());
             }
 
             userStatistics.Value.Remarks.IncreaseReported();
@@ -85,7 +85,7 @@ namespace Collectively.Services.Statistics.Handlers
             if (categoryStatistics.HasNoValue)
             {
                 categoryStatistics = new CategoryStatistics(remark.Value.Category.Name, 
-                    new RemarksCountStatistics(@new: 1, reported: 1));
+                    new RemarksCountStatistics());
             }
 
             categoryStatistics.Value.Remarks.IncreaseReported();
@@ -103,7 +103,7 @@ namespace Collectively.Services.Statistics.Handlers
                 var tagStatistic = await _tagStatisticsRepository.GetByNameAsync(tag);
                 if (tagStatistic.HasNoValue)
                 {
-                    tagStatistic = new TagStatistics(tag, new RemarksCountStatistics(@new: 1, reported: 1));
+                    tagStatistic = new TagStatistics(tag, new RemarksCountStatistics());
                 }
 
                 tagStatistic.Value.Remarks.IncreaseReported();
