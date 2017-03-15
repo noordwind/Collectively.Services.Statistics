@@ -5,9 +5,9 @@ using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Statistics.Handlers
 {
-    public class RemarkDeletedHandler : RemarkStateChangedBaseHandler<RemarkDeleted>
+    public class RemarkRenewedHandler : RemarkStateChangedBaseHandler<RemarkRenewed>
     {
-        public RemarkDeletedHandler(IHandler handler, 
+        public RemarkRenewedHandler(IHandler handler, 
             IRemarkStatisticsRepository remarkStatisticsRepository,
             IUserStatisticsRepository userStatisticsRepository,
             ICategoryStatisticsRepository categoryStatisticsRepository,
@@ -17,12 +17,9 @@ namespace Collectively.Services.Statistics.Handlers
                     userStatisticsRepository, categoryStatisticsRepository, 
                     tagStatisticsRepository, serviceClient)
         {
-            Setup(x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();}, 
-                  x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();}, 
-                  x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();});
+            Setup(x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); }, 
+                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); }, 
+                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); });
         }
     }
 }

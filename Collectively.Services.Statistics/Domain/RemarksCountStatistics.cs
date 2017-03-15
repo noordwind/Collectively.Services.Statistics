@@ -30,9 +30,19 @@
             NewCount++;
         }
 
+        public virtual void DecreaseNew()
+        {
+            NewCount--;
+        }
+
         public virtual void IncreaseReported()
         {
             ReportedCount++;
+        }
+
+        public virtual void DecreaseReported()
+        {
+            ReportedCount--;
         }
 
         public virtual void IncreaseProcessing()
@@ -40,9 +50,19 @@
             ProcessingCount++;
         }
 
+        public virtual void DecreaseProcessing()
+        {
+            ProcessingCount--;
+        }
+
         public virtual void IncreaseResolved()
         {
             ResolvedCount++;
+        }
+
+        public virtual void DecreaseResolved()
+        {
+            ResolvedCount--;
         }
 
         public virtual void IncreaseCanceled()
@@ -50,14 +70,29 @@
             CanceledCount++;
         }
 
+        public virtual void DecreaseCanceled()
+        {
+            CanceledCount--;
+        }
+
         public virtual void IncreaseDeleted()
         {
             DeletedCount++;
+        }
+
+        public virtual void DecreaseDeleted()
+        {
+            DeletedCount--;
         }
 
         public virtual void IncreaseRenewed()
         {
             RenewedCount++;
         }
+
+        public virtual void DecreaseRenewed()
+        {
+            RenewedCount--;
+        }        
     }
 }
