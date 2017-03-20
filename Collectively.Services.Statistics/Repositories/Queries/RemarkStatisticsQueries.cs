@@ -5,6 +5,7 @@ using Collectively.Common.Mongo;
 using Collectively.Services.Statistics.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Linq;
 
 namespace Collectively.Services.Statistics.Repositories.Queries
 {
@@ -35,15 +36,21 @@ namespace Collectively.Services.Statistics.Repositories.Queries
         {
             var from = query.From.GetValueOrDefault(default(DateTime));
             var to = query.To.GetValueOrDefault(DateTime.MaxValue);
-            var reported = await statistics.AsQueryable()
-                .CountAsync(x => x.CreatedAt > from 
-                && x.CreatedAt < to);
-            var resvoled = await statistics.AsQueryable()
-                .CountAsync(x => x.State.State == "resolved"
-                && x.State.CreatedAt > from
-                && x.State.CreatedAt < to);
+            var states = await statistics.AsQueryable()
+                .Where(x => x.State.CreatedAt > from && x.State.CreatedAt < to)
+                .Select(x => x.State.State)
+                .ToListAsync();
 
-            return new RemarksCountStatistics(reported: reported, resolved: resvoled);
+            var reported = states.Count();
+            var @new = states.Count(x => x == RemarkState.Names.New);
+            var processing = states.Count(x => x == RemarkState.Names.Processing);
+            var resolved = states.Count(x => x == RemarkState.Names.Resolved);
+            var canceled = states.Count(x => x == RemarkState.Names.Canceled);
+            var renewed = states.Count(x => x == RemarkState.Names.Renewed);
+            var deleted = reported - @new - processing - resolved - canceled - renewed;
+
+            return new RemarksCountStatistics(@new, reported, processing,
+                resolved, canceled, deleted, renewed);
         }
     }
 }
