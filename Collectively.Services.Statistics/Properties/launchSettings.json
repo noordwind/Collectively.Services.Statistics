@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Collectively.Services.Statistics": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:10006"
+    }
+  }
+}
