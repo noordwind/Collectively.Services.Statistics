@@ -11,6 +11,15 @@ namespace Collectively.Services.Statistics.Domain
         public Location Location { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
+        public static class Names
+        {
+            public static string New => "new";
+            public static string Processing => "processing";
+            public static string Resolved => "resolved";
+            public static string Renewed => "renewed";
+            public static string Canceled => "canceled";
+        }
+
         protected RemarkState()
         {
         }
