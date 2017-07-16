@@ -9,7 +9,7 @@ namespace Collectively.Services.Statistics
         public static void Main(string[] args)
         {
             WebServiceHost
-                .Create<Startup>(port: 10006)
+                .Create<Startup>()
                 .UseAutofac(Bootstrapper.LifetimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<RemarkCreated>()
