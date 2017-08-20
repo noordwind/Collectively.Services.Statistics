@@ -1,3 +1,3 @@
 #!/bin/bash
 cd tests/Collectively.Services.Statistics.Tests
-dotnet test
+dotnet test --no-restore
