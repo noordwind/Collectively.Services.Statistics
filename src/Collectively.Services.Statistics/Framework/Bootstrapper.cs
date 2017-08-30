@@ -15,7 +15,7 @@ using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Configuration;
 using Newtonsoft.Json;
-using NLog;
+using Serilog;
 using RawRabbit.Configuration;
 using Collectively.Common.ServiceClients;
 
@@ -23,7 +23,7 @@ namespace Collectively.Services.Statistics.Framework
 {
     public class Bootstrapper : AutofacNancyBootstrapper
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = Log.Logger;
         private static IExceptionHandler _exceptionHandler;
         private readonly IConfiguration _configuration;
         public static ILifetimeScope LifetimeScope { get; private set; }
@@ -43,7 +43,7 @@ namespace Collectively.Services.Statistics.Framework
 
         protected override void ConfigureApplicationContainer(ILifetimeScope container)
         {
-            Logger.Info("Collectively.Services.Statistics Configuring application container");
+            Logger.Information("Collectively.Services.Statistics Configuring application container");
             base.ConfigureApplicationContainer(container);
 
             container.Update(builder =>
@@ -99,7 +99,7 @@ namespace Collectively.Services.Statistics.Framework
             };
             pipelines.SetupTokenAuthentication(container);
             _exceptionHandler = container.Resolve<IExceptionHandler>();
-            Logger.Info("Collectively.Services.Statistics API has started.");
+            Logger.Information("Collectively.Services.Statistics API has started.");
         }
     }
 }
