@@ -47,12 +47,14 @@
 
         public virtual void IncreaseProcessing()
         {
-            ProcessingCount++;
+            //For now it does nothing, as it requires to check the previous state of the remark.
+            //ProcessingCount++;
         }
 
         public virtual void DecreaseProcessing()
         {
-            ProcessingCount--;
+            //For now it does nothing, as it requires to check the previous state of the remark.
+            //ProcessingCount--;
         }
 
         public virtual void IncreaseResolved()

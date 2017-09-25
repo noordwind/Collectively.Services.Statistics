@@ -15,7 +15,7 @@ namespace Collectively.Services.Statistics
                 .SubscribeToEvent<RemarkCreated>()
                 .SubscribeToEvent<RemarkResolved>()
                 .SubscribeToEvent<RemarkDeleted>()
-                .SubscribeToEvent<RemarkProcessed>()
+                //.SubscribeToEvent<RemarkProcessed>()
                 .SubscribeToEvent<RemarkRenewed>()
                 .SubscribeToEvent<RemarkCanceled>()
                 .SubscribeToEvent<RemarkVoteSubmitted>()

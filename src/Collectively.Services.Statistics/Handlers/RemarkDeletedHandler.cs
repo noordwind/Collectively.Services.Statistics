@@ -18,11 +18,11 @@ namespace Collectively.Services.Statistics.Handlers
                     tagStatisticsRepository, serviceClient)
         {
             Setup(x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();}, 
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseReported();}, 
                   x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();}, 
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseReported();}, 
                   x => { x.Remarks.IncreaseDeleted(); x.Remarks.DecreaseNew(); x.Remarks.DecreaseProcessing();
-                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseProcessing();});
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseReported();});
         }
     }
 }

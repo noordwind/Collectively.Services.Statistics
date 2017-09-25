@@ -17,9 +17,12 @@ namespace Collectively.Services.Statistics.Handlers
                     userStatisticsRepository, categoryStatisticsRepository, 
                     tagStatisticsRepository, serviceClient)
         {
-            Setup(x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); }, 
-                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); }, 
-                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); x.Remarks.DecreaseCanceled(); });
+            Setup(x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); 
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseResolved(); }, 
+                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); 
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseResolved();}, 
+                  x => { x.Remarks.IncreaseRenewed(); x.Remarks.IncreaseNew(); 
+                         x.Remarks.DecreaseCanceled(); x.Remarks.DecreaseResolved();});
         }
     }
 }
