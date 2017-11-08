@@ -23,7 +23,7 @@ namespace Collectively.Services.Statistics.Repositories
         public async Task<Maybe<PagedResult<RemarkStatistics>>> BrowseAsync(BrowseRemarkStatistics query)
             => await _database.RemarkStatistics()
                     .Query(query)
-                    .PaginateAsync();
+                    .PaginateAsync(query);
 
         public async Task<Maybe<RemarksCountStatistics>> GetGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
             => await _database.RemarkStatistics()

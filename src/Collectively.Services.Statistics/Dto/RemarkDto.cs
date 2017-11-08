@@ -15,6 +15,6 @@ namespace Collectively.Services.Statistics.Dto
         public DateTime CreatedAt { get; set; }
         public int Rating { get; set; }
         public bool Resolved { get; set; }
-        public IList<string> Tags { get; set; }
+        public IList<RemarkTagDto> Tags { get; set; }
     }
 }

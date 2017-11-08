@@ -7,7 +7,7 @@ namespace Collectively.Services.Statistics.Domain
     public class RemarkStatistics : IdentifiableEntity
     {
         private ISet<RemarkState> _states = new HashSet<RemarkState>();
-        private ISet<string> _tags = new HashSet<string>();
+        private ISet<RemarkTag> _tags = new HashSet<RemarkTag>();
         private ISet<Vote> _votes = new HashSet<Vote>();
         public Guid RemarkId { get; protected set; }
         public User Author { get; protected set; }
@@ -23,10 +23,10 @@ namespace Collectively.Services.Statistics.Domain
             protected set { _states = new HashSet<RemarkState>(value); }
         }
 
-        public IEnumerable<string> Tags
+        public IEnumerable<RemarkTag> Tags
         {
             get { return _tags; }
-            protected set { _tags = new HashSet<string>(value); }
+            protected set { _tags = new HashSet<RemarkTag>(value); }
         }
 
         public IEnumerable<Vote> Votes
@@ -42,14 +42,14 @@ namespace Collectively.Services.Statistics.Domain
         public RemarkStatistics(Guid remarkId, string category,
             string authorId, string authorName, DateTime createdAt, string state,
             double latitude, double longitude, string address = null,
-            string description = null, IEnumerable<string> tags = null)
+            string description = null, IEnumerable<RemarkTag> tags = null)
         {
             RemarkId = remarkId;
             Category = category;
             Author = new User(authorId, authorName);
             CreatedAt = createdAt;
             Description = description;
-            Tags = tags ?? new HashSet<string>();
+            Tags = tags ?? new HashSet<RemarkTag>();
             Location = new Location(latitude, longitude, address);
             var remarkState = new RemarkState(state, authorId, location: Location);
             AddState(remarkState);

@@ -20,7 +20,7 @@ namespace Collectively.Services.Statistics.Repositories
         public async Task<Maybe<PagedResult<CategoryStatistics>>> BrowseAsync(BrowseCategoryStatistics query)
             => await _database.CategoryStatistics()
                 .Query(query)
-                .PaginateAsync();
+                .PaginateAsync(query);
 
         public async Task<Maybe<CategoryStatistics>> GetByNameAsync(string name)
             => await _database.CategoryStatistics()

@@ -13,6 +13,7 @@ namespace Collectively.Services.Statistics.Framework
                 cfg.CreateMap<User, UserDto>();
                 cfg.CreateMap<Location, LocationDto>();
                 cfg.CreateMap<Vote, VoteDto>();
+                cfg.CreateMap<RemarkTag, RemarkTagDto>();
                 cfg.CreateMap<RemarkState, RemarkStateDto>();
                 cfg.CreateMap<RemarksCountStatistics, RemarksCountStatisticsDto>();
                 cfg.CreateMap<RemarkStatistics, RemarkStatisticsDto>();

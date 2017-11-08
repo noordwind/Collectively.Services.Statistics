@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Collectively.Common.Mongo;
 using Collectively.Common.Types;
 using Collectively.Services.Statistics.Domain;
@@ -20,11 +21,11 @@ namespace Collectively.Services.Statistics.Repositories
         public async Task<Maybe<PagedResult<TagStatistics>>> BrowseAsync(BrowseTagStatistics query)
             => await _database.TagStatistics()
                 .Query(query)
-                .PaginateAsync();
+                .PaginateAsync(query);
 
-        public async Task<Maybe<TagStatistics>> GetByNameAsync(string name)
+        public async Task<Maybe<TagStatistics>> GetByDefaultIdAsync(Guid id)
             => await _database.TagStatistics()
-                .GetByNameAsync(name);
+                .GetByDefaultIdAsync(id);
 
         public async Task AddOrUpdateAsync(TagStatistics statistics)
             => await _database.TagStatistics()

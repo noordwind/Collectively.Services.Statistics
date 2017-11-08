@@ -7,6 +7,7 @@ using Collectively.Services.Statistics.Repositories;
 using Collectively.Services.Statistics.Dto;
 using Collectively.Common.ServiceClients;
 using System;
+using System.Linq;
 
 namespace Collectively.Services.Statistics.Handlers
 {
@@ -71,7 +72,14 @@ namespace Collectively.Services.Statistics.Handlers
                     remark.Value.Category.Name, @event.UserId, remark.Value.Author.Name,
                     remark.Value.CreatedAt, remark.Value.State.State, 
                     remark.Value.Location.Latitude, remark.Value.Location.Longitude, 
-                    remark.Value.Location.Address, remark.Value.Description, remark.Value.Tags);
+                    remark.Value.Location.Address, remark.Value.Description, 
+                    remark.Value.Tags.Select(x => new RemarkTag
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Default = x.Default,
+                        DefaultId = x.DefaultId
+                    }).ToList());
             }
             else
             {
@@ -123,7 +131,7 @@ namespace Collectively.Services.Statistics.Handlers
 
             foreach (var tag in remarkStats.Value.Tags)
             {
-                var tagStats = await _tagStatisticsRepository.GetByNameAsync(tag);
+                var tagStats = await _tagStatisticsRepository.GetByDefaultIdAsync(tag.DefaultId);
                 if (tagStats.HasNoValue)
                 {
                     tagStats = new TagStatistics(tag, new RemarksCountStatistics());

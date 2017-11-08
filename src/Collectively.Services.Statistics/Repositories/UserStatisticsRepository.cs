@@ -21,7 +21,7 @@ namespace Collectively.Services.Statistics.Repositories
         public async Task<Maybe<PagedResult<UserStatistics>>> BrowseAsync(BrowseUserStatistics query)
             => await _database.UserStatistics()
                     .Query(query)
-                    .PaginateAsync();
+                    .PaginateAsync(query);
 
         public async Task<Maybe<UserStatistics>> GetByIdAsync(string userId)
             => await _database.UserStatistics().GetByIdAsync(userId);

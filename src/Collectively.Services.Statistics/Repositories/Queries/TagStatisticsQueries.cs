@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Collectively.Common.Mongo;
 using Collectively.Services.Statistics.Domain;
 using Collectively.Services.Statistics.Queries;
@@ -12,16 +13,16 @@ namespace Collectively.Services.Statistics.Repositories.Queries
         public static IMongoCollection<TagStatistics> TagStatistics(this IMongoDatabase database)
             => database.GetCollection<TagStatistics>();
 
-        public static async Task<TagStatistics> GetByNameAsync(
-            this IMongoCollection<TagStatistics> collection, string name)
+        public static async Task<TagStatistics> GetByDefaultIdAsync(
+            this IMongoCollection<TagStatistics> collection, Guid id)
         {
-            return await collection.FirstOrDefaultAsync(x => x.Name == name);
+            return await collection.FirstOrDefaultAsync(x => x.Tag.DefaultId == id);
         }
 
         public static async Task AddOrUpdateAsync(this IMongoCollection<TagStatistics> collection,
             TagStatistics statistics)
         {
-            await collection.ReplaceOneAsync(x => x.Name == statistics.Name, statistics, new UpdateOptions
+            await collection.ReplaceOneAsync(x => x.Tag.DefaultId == statistics.Tag.Id, statistics, new UpdateOptions
             {
                 IsUpsert = true
             });

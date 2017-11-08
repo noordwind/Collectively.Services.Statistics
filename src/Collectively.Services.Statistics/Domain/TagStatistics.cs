@@ -5,19 +5,19 @@ namespace Collectively.Services.Statistics.Domain
 {
     public class TagStatistics
     {
-        public string Name { get; protected set; }
+        public RemarkTag Tag { get; protected set; }
 
         public RemarksCountStatistics Remarks { get; protected set; }
 
         protected TagStatistics() { }
 
-        public TagStatistics(string name, RemarksCountStatistics remarks = null)
+        public TagStatistics(RemarkTag tag, RemarksCountStatistics remarks = null)
         {
-            if (name.Empty())
+            if (tag == null)
             {
-                throw new ArgumentException("Category name can not be empty.", nameof(name));
+                throw new ArgumentException("Remark tag can not be null.", nameof(tag));
             }
-            Name = name;
+            Tag = tag;
             Remarks = remarks ?? new RemarksCountStatistics();
         }
     }
